@@ -94,7 +94,7 @@ for (workload in workloads) {
   xlabels = paste(xbreaks, "\n", currentWorkloadSizes, sep = "")
 
   # drop every other models size
-  evens = seq(2, log2(max(df$Model)), by=2)
+  evens = seq(2, max(c(2, log2(max(df$Model)))), by=2)
   xlabels[evens] = ""
 
   # y axis labels
@@ -154,13 +154,13 @@ heatmap = function(df, attributes, map.from = NULL, map.to = NULL, levels, title
   df$Model = discretize(
     df$Model,
     "fixed",
-    categories = c(-Inf, 16, 256, Inf),
+    breaks = c(-Inf, 16, 256, Inf),
     labels = c("small", "medium", "large"))
   
   df$Time = discretize(
     df$Time,
     "fixed",
-    categories = c(-Inf, 200, 1000, 5000, Inf),
+    breaks = c(-Inf, 200, 1000, 5000, Inf),
     labels = c("instantaneous", "fast", "acceptable", "slow"))
   
   if (!is.null(map.from)) {

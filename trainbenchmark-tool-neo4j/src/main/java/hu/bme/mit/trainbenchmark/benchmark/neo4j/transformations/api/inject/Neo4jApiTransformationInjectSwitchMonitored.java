@@ -11,17 +11,19 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.api.inject;
 
-import java.util.Collection;
-
-import org.neo4j.graphdb.Relationship;
-
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.driver.Neo4jDriver;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jSwitchMonitoredInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransformation;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ResourceIterable;
+import org.neo4j.graphdb.Transaction;
+
+import java.util.Collection;
 
 public class Neo4jApiTransformationInjectSwitchMonitored
-		extends Neo4jApiTransformation<Neo4jSwitchMonitoredInjectMatch> {
+	extends Neo4jApiTransformation<Neo4jSwitchMonitoredInjectMatch> {
 
 	public Neo4jApiTransformationInjectSwitchMonitored(final Neo4jDriver driver) {
 		super(driver);
@@ -29,11 +31,13 @@ public class Neo4jApiTransformationInjectSwitchMonitored
 
 	@Override
 	public void activate(final Collection<Neo4jSwitchMonitoredInjectMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jSwitchMonitoredInjectMatch match : matches) {
-			final Iterable<Relationship> monitoredBys = match.getSw()
-					.getRelationships(Neo4jConstants.relationshipTypeMonitoredBy);
-			for (final Relationship monitoredBy : monitoredBys) {
-				monitoredBy.delete();
+			Node sw = tx.getNodeByElementId(match.getSw());
+			try(final ResourceIterable<Relationship> monitoredBys = sw.getRelationships(Neo4jConstants.relationshipTypeMonitoredBy)) {
+				for (final Relationship monitoredBy : monitoredBys) {
+					monitoredBy.delete();
+				}
 			}
 		}
 	}

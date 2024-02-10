@@ -17,14 +17,12 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransfo
 import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.TrainBenchmarkConstants;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.*;
 
 import java.util.Collection;
 
 public class Neo4jApiTransformationInjectConnectedSegments
-		extends Neo4jApiTransformation<Neo4jConnectedSegmentsInjectMatch> {
+	extends Neo4jApiTransformation<Neo4jConnectedSegmentsInjectMatch> {
 
 	public Neo4jApiTransformationInjectConnectedSegments(final Neo4jDriver driver) {
 		super(driver);
@@ -32,29 +30,33 @@ public class Neo4jApiTransformationInjectConnectedSegments
 
 	@Override
 	public void activate(final Collection<Neo4jConnectedSegmentsInjectMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jConnectedSegmentsInjectMatch match : matches) {
 			// create (segment2) node
-			final Node segment2 = driver.getGraphDb().createNode(Neo4jConstants.labelSegment);
+			final Node segment2 = tx.createNode(Neo4jConstants.labelSegment);
 			segment2.setProperty(ModelConstants.ID, driver.generateNewVertexId());
 			segment2.setProperty(ModelConstants.LENGTH, TrainBenchmarkConstants.DEFAULT_SEGMENT_LENGTH);
 
 			// (segment2)-[:monitoredBy]->(sensor)
-			segment2.createRelationshipTo(match.getSensor(), Neo4jConstants.relationshipTypeMonitoredBy);
+			Node sensorNode = tx.getNodeByElementId(match.getSensor());
+			segment2.createRelationshipTo(sensorNode, Neo4jConstants.relationshipTypeMonitoredBy);
 
 			// (segment1)-[:connectsTo]->(segment2)
-			match.getSegment1().createRelationshipTo(segment2, Neo4jConstants.relationshipTypeConnectsTo);
+			Node segment1 = tx.getNodeByElementId(match.getSegment1());
+			segment1.createRelationshipTo(segment2, Neo4jConstants.relationshipTypeConnectsTo);
 			// (segment2)-[:connectsTo]->(segment3)
-			segment2.createRelationshipTo(match.getSegment3(), Neo4jConstants.relationshipTypeConnectsTo);
+			Node segment3 = tx.getNodeByElementId(match.getSegment3());
+			segment2.createRelationshipTo(segment3, Neo4jConstants.relationshipTypeConnectsTo);
 
 			// remove (segment1)-[:connectsTo]->(segment3)
-			final Iterable<Relationship> connectsToEdges = match.getSegment1().getRelationships(Direction.OUTGOING,
-					Neo4jConstants.relationshipTypeConnectsTo);
+			final ResourceIterable<Relationship> connectsToEdges = segment1.getRelationships(Direction.OUTGOING,
+				Neo4jConstants.relationshipTypeConnectsTo);
 			for (final Relationship connectsToEdge : connectsToEdges) {
-				if (connectsToEdge.getEndNode().equals(match.getSegment3())) {
+				if (connectsToEdge.getEndNode().getElementId().equals(match.getSegment3())) {
 					connectsToEdge.delete();
 				}
 			}
+			connectsToEdges.close();
 		}
 	}
-
 }

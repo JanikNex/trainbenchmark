@@ -17,6 +17,8 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransfo
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ResourceIterable;
+import org.neo4j.graphdb.Transaction;
 
 import java.util.Collection;
 
@@ -28,15 +30,20 @@ public class Neo4jApiTransformationRepairConnectedSegments extends Neo4jApiTrans
 
 	@Override
 	public void activate(final Collection<Neo4jConnectedSegmentsMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jConnectedSegmentsMatch match : matches) {
 			// delete segment2 with all its relationships
-			final Node segment2 = match.getSegment2();
-			for (final Relationship relationship : segment2.getRelationships()) {
-				relationship.delete();
+			final Node segment2 = tx.getNodeByElementId(match.getSegment2());
+			try (final ResourceIterable<Relationship> relationships = segment2.getRelationships()) {
+				for (final Relationship relationship : relationships) {
+					relationship.delete();
+				}
 			}
 			segment2.delete();
 			// (segment1)-[:connectsTo]->(segment3)
-			match.getSegment1().createRelationshipTo(match.getSegment3(), Neo4jConstants.relationshipTypeConnectsTo);
+			final Node segment1 = tx.getNodeByElementId(match.getSegment1());
+			final Node segment3 = tx.getNodeByElementId(match.getSegment3());
+			segment1.createRelationshipTo(segment3, Neo4jConstants.relationshipTypeConnectsTo);
 		}
 	}
 

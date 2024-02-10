@@ -1,13 +1,13 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.viatra.ViatraBenchmarkMain' }
 }
 
 dependencies {
-	compile project(':trainbenchmark-tool-viatra-patterns')
-	compile project(':trainbenchmark-tool-emf')
-	compile project(':trainbenchmark-format-emf')
-	compile project(':trainbenchmark-format-emf-model')
+	api project(':trainbenchmark-tool-viatra-patterns')
+	api project(':trainbenchmark-tool-emf')
+	api project(':trainbenchmark-format-emf')
+	api project(':trainbenchmark-format-emf-model')
 }

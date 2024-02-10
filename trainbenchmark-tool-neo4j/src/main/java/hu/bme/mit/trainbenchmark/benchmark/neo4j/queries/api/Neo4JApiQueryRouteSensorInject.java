@@ -42,7 +42,7 @@ public class Neo4JApiQueryRouteSensorInject extends Neo4jApiQuery<Neo4jRouteSens
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (Transaction tx = graphDb.beginTx()) {
 			// (route:Route)
-			final Iterable<Node> routes = () -> graphDb.findNodes(Neo4jConstants.labelRoute);
+			final Iterable<Node> routes = () -> tx.findNodes(Neo4jConstants.labelRoute);
 			for (final Node route : routes) {
 
 				final Iterable<Node> sensors = Neo4jUtil.getAdjacentNodes(route, Neo4jConstants.relationshipTypeRequires,
@@ -50,8 +50,8 @@ public class Neo4JApiQueryRouteSensorInject extends Neo4jApiQuery<Neo4jRouteSens
 
 				for (final Node sensor : sensors) {
 					final Map<String, Object> match = new HashMap<>();
-					match.put(QueryConstants.VAR_ROUTE, route);
-					match.put(QueryConstants.VAR_SENSOR, sensor);
+					match.put(QueryConstants.VAR_ROUTE, route.getElementId());
+					match.put(QueryConstants.VAR_SENSOR, sensor.getElementId());
 					matches.add(new Neo4jRouteSensorInjectMatch(match));
 				}
 			}

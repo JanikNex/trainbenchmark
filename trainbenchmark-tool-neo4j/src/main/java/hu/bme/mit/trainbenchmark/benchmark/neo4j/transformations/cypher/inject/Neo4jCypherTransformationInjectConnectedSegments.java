@@ -18,6 +18,8 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jCypherTran
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
 import hu.bme.mit.trainbenchmark.constants.TrainBenchmarkConstants;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -31,15 +33,19 @@ public class Neo4jCypherTransformationInjectConnectedSegments extends Neo4jCyphe
 
 	@Override
 	public void activate(final Collection<Neo4jConnectedSegmentsInjectMatch> matches) throws IOException {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jConnectedSegmentsInjectMatch match : matches) {
+			Node sensor = tx.getNodeByElementId(match.getSensor());
+			Node segment1 = tx.getNodeByElementId(match.getSegment1());
+			Node segment3 = tx.getNodeByElementId(match.getSegment3());
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_ID, driver.generateNewVertexId(), //
-					QueryConstants.VAR_SENSOR, match.getSensor(), //
-					QueryConstants.VAR_SEGMENT1, match.getSegment1(), //
-					QueryConstants.VAR_SEGMENT3, match.getSegment3(), //
-					QueryConstants.VAR_LENGTH, TrainBenchmarkConstants.DEFAULT_SEGMENT_LENGTH //
+				QueryConstants.VAR_ID, driver.generateNewVertexId(), //
+				QueryConstants.VAR_SENSOR, sensor, //
+				QueryConstants.VAR_SEGMENT1, segment1, //
+				QueryConstants.VAR_SEGMENT3, segment3, //
+				QueryConstants.VAR_LENGTH, TrainBenchmarkConstants.DEFAULT_SEGMENT_LENGTH //
 			);
-			driver.runTransformation(transformationDefinition, parameters);
+			driver.runTransformation(tx, transformationDefinition, parameters);
 		}
 	}
 

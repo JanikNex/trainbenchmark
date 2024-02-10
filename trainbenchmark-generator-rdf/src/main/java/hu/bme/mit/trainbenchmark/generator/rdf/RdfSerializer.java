@@ -72,20 +72,18 @@ public class RdfSerializer extends ModelSerializer<RdfGeneratorConfig> {
 	@Override
 	public Object createVertex(final int id, final String type, final Map<String, ? extends Object> attributes,
 			final Map<String, Object> outgoingEdges, final Map<String, Object> incomingEdges) throws IOException {
-		final String xsdInteger;
 		final String rdfType;
-		switch (gc.getFormat()) {
-			case NTRIPLES:
-				rdfType = "<http://www.semanticweb.org/ontologies/2015/trainbenchmark#type>";
-				xsdInteger = "<http://www.w3.org/2001/XMLSchema#int>";
-				break;
-			case TURTLE:
-				rdfType = "a";
-				xsdInteger = "xsd:int";
-				break;
-			default:
-				throw new UnsupportedOperationException("RDF format " + gc.getFormat() + " not supported");
-		}
+		final String xsdInteger = switch (gc.getFormat()) {
+            case NTRIPLES -> {
+                rdfType = "<http://www.semanticweb.org/ontologies/2015/trainbenchmark#type>";
+                yield "<http://www.w3.org/2001/XMLSchema#int>";
+            }
+            case TURTLE -> {
+                rdfType = "a";
+                yield "xsd:int";
+            }
+            default -> throw new UnsupportedOperationException("RDF format " + gc.getFormat() + " not supported");
+        };
 
 		// vertex id and type
 		final String triple = String.format("%s %s %s",
@@ -95,19 +93,13 @@ public class RdfSerializer extends ModelSerializer<RdfGeneratorConfig> {
 		);
 		final StringBuilder vertex = new StringBuilder(triple);
 
-		final String linePrefix;
-		switch (gc.getFormat()) {
-		case NTRIPLES:
-			linePrefix = String.format(" .\n%s ", prefixed(ID_PREFIX+id));
-			break;
-		case TURTLE:
-			linePrefix = " ;\n\t";
-			break;
-		default:
-			throw new UnsupportedOperationException("RDF format " + gc.getFormat() + " not supported");
-		}
+		final String linePrefix = switch (gc.getFormat()) {
+            case NTRIPLES -> String.format(" .\n%s ", prefixed(ID_PREFIX + id));
+            case TURTLE -> " ;\n\t";
+            default -> throw new UnsupportedOperationException("RDF format " + gc.getFormat() + " not supported");
+        };
 
-		// if required, we manually insert the inferred triples
+        // if required, we manually insert the inferred triples
 		if (gc.isInferred()) {
 			if (ModelConstants.SUPERTYPES.containsKey(type)) {
 				final String superType = ModelConstants.SUPERTYPES.get(type);
@@ -178,12 +170,10 @@ public class RdfSerializer extends ModelSerializer<RdfGeneratorConfig> {
 	protected String stringValue(final Object value, final String xsdInteger) {
 		if (value instanceof Boolean) {
 			final String boolString = Boolean.toString((Boolean) value);
-			switch (gc.getFormat()) {
-				case TURTLE:
-					return boolString;
-				case NTRIPLES:
-					return String.format("\"%s\"^^<xs:boolean>", boolString);
-			}
+            return switch (gc.getFormat()) {
+                case TURTLE -> boolString;
+                case NTRIPLES -> String.format("\"%s\"^^<xs:boolean>", boolString);
+            };
 		}
 		if (value instanceof Integer) {
 			return String.format("\"%d\"^^" + xsdInteger, value);
@@ -197,13 +187,10 @@ public class RdfSerializer extends ModelSerializer<RdfGeneratorConfig> {
 	}
 
 	protected String prefixed(final String s) {
-		switch (gc.getFormat()) {
-			case TURTLE:
-				return ":" + s;
-			case NTRIPLES:
-				return String.format("<%s%s>", RdfConstants.BASE_PREFIX, s);
-		}
-		throw new UnsupportedOperationException("RDF format " + gc.getFormat() + " not supported");
-	}
+        return switch (gc.getFormat()) {
+            case TURTLE -> ":" + s;
+            case NTRIPLES -> String.format("<%s%s>", RdfConstants.BASE_PREFIX, s);
+        };
+    }
 
 }

@@ -12,36 +12,26 @@
 package hu.bme.mit.trainbenchmark.benchmark.sesame.driver;
 
 import hu.bme.mit.trainbenchmark.benchmark.rdf.driver.RdfDriver;
-import hu.bme.mit.trainbenchmark.benchmark.sesame.comparators.UriComparator;
+import hu.bme.mit.trainbenchmark.benchmark.sesame.comparators.IriComparator;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesameMatch;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
 import hu.bme.mit.trainbenchmark.rdf.RdfConstants;
-import org.openrdf.OpenRDFException;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.BooleanQuery;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFFormat;
-import org.openrdf.sail.inferencer.fc.ForwardChainingRDFSInferencer;
-import org.openrdf.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.query.*;
+import org.eclipse.rdf4j.repository.Repository;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.rio.RDFFormat;
+import org.eclipse.rdf4j.sail.inferencer.fc.SchemaCachingRDFSInferencer;
+import org.eclipse.rdf4j.sail.memory.MemoryStore;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static hu.bme.mit.trainbenchmark.rdf.RdfConstants.BASE_PREFIX;
 
@@ -51,7 +41,7 @@ public class SesameDriver extends RdfDriver {
 	protected Repository repository;
 	protected ValueFactory vf;
 
-	protected final Comparator<URI> elementComparator = new UriComparator();
+	protected final Comparator<IRI> elementComparator = new IriComparator();
 
 	public SesameDriver(final boolean inferencing) {
 		super(inferencing);
@@ -67,36 +57,33 @@ public class SesameDriver extends RdfDriver {
 	}
 
 	@Override
-	public void read(final String modelPath) throws IOException, OpenRDFException {
+	public void read(final String modelPath) throws IOException {
 		if (inferencing) {
-			repository = new SailRepository(new ForwardChainingRDFSInferencer(new MemoryStore()));
+			repository = new SailRepository(new SchemaCachingRDFSInferencer(new MemoryStore()));
 		} else {
 			repository = new SailRepository(new MemoryStore());
 		}
 
 		final File modelFile = new File(modelPath);
 
-		repository.initialize();
+		repository.init();
 		vf = repository.getValueFactory();
 		connection = repository.getConnection();
 		connection.add(modelFile, RdfConstants.BASE_PREFIX, RDFFormat.TURTLE);
 	}
 
 	public Collection<? extends SesameMatch> runQuery(final RailwayQuery query, final String queryDefinition)
-			throws RepositoryException, MalformedQueryException, QueryEvaluationException {
+		throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		final Collection<SesameMatch> results = new ArrayList<>();
 
 		final TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, queryDefinition);
-		final TupleQueryResult queryResults = tupleQuery.evaluate();
-		try {
-			while (queryResults.hasNext()) {
-				final BindingSet bs = queryResults.next();
-				final SesameMatch match = SesameMatch.createMatch(query, bs);
-				results.add(match);
-			}
-		} finally {
-			queryResults.close();
-		}
+        try (TupleQueryResult queryResults = tupleQuery.evaluate()) {
+            while (queryResults.hasNext()) {
+                final BindingSet bs = queryResults.next();
+                final SesameMatch match = SesameMatch.createMatch(query, bs);
+                results.add(match);
+            }
+        }
 
 		return results;
 	}
@@ -111,18 +98,18 @@ public class SesameDriver extends RdfDriver {
 
 	// delete
 
-	public void deleteOutgoingEdges(final Collection<URI> vertices, final String edgeType)
-			throws RepositoryException {
+	public void deleteOutgoingEdges(final Collection<IRI> vertices, final String edgeType)
+		throws RepositoryException {
 		deleteEdges(vertices, edgeType, true, true);
 	}
 
-	protected void deleteEdges(final Collection<URI> vertices, final String edgeType, final boolean outgoing,
-			final boolean all) throws RepositoryException {
+	protected void deleteEdges(final Collection<IRI> vertices, final String edgeType, final boolean outgoing,
+							   final boolean all) throws RepositoryException {
 		final List<Statement> itemsToRemove = new ArrayList<>();
 
-		final URI edge = vf.createURI(BASE_PREFIX + edgeType);
+		final IRI edge = vf.createIRI(BASE_PREFIX + edgeType);
 
-		for (final URI vertex : vertices) {
+		for (final IRI vertex : vertices) {
 			final RepositoryResult<Statement> statementsToRemove;
 			if (outgoing) {
 				statementsToRemove = connection.getStatements(vertex, edge, null, true);
@@ -150,7 +137,7 @@ public class SesameDriver extends RdfDriver {
 
 	@Override
 	protected boolean ask(final String askQuery)
-			throws RepositoryException, MalformedQueryException, QueryEvaluationException {
+		throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		final BooleanQuery q = connection.prepareBooleanQuery(QueryLanguage.SPARQL, askQuery);
 		final boolean result = q.evaluate();
 		return result;

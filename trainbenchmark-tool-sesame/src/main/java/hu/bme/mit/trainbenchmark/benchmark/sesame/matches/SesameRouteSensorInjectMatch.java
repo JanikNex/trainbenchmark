@@ -14,8 +14,8 @@ package hu.bme.mit.trainbenchmark.benchmark.sesame.matches;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_ROUTE;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SENSOR;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import hu.bme.mit.trainbenchmark.benchmark.matches.RouteSensorInjectMatch;
 
@@ -26,13 +26,13 @@ public class SesameRouteSensorInjectMatch extends SesameMatch implements RouteSe
 	}
 
 	@Override
-	public URI getRoute() {
-		return (URI) bs.getValue(VAR_ROUTE);
+	public IRI getRoute() {
+		return (IRI) bs.getValue(VAR_ROUTE);
 	}
 
 	@Override
-	public URI getSensor() {
-		return (URI) bs.getValue(VAR_SENSOR);
+	public IRI getSensor() {
+		return (IRI) bs.getValue(VAR_SENSOR);
 	}
 
 }

@@ -16,15 +16,10 @@ import static hu.bme.mit.trainbenchmark.rdf.RdfConstants.BASE_PREFIX;
 
 import java.util.Collection;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.*;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import hu.bme.mit.trainbenchmark.benchmark.sesame.driver.SesameDriver;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesamePosLengthMatch;
@@ -41,7 +36,7 @@ public class SesameTransformationRepairPosLength<TSesameDriver extends SesameDri
 		final RepositoryConnection con = driver.getConnection();
 		final ValueFactory vf = driver.getValueFactory();
 
-		final URI lengthProperty = vf.createURI(BASE_PREFIX + LENGTH);
+		final IRI lengthProperty = vf.createIRI(BASE_PREFIX + LENGTH);
 
 		for (final SesamePosLengthMatch match : matches) {
 			final Resource segment = match.getSegment();
@@ -53,8 +48,8 @@ public class SesameTransformationRepairPosLength<TSesameDriver extends SesameDri
 				con.remove(oldStatement);
 			}
 
-			final Integer lengthInteger = new Integer(length.stringValue());
-			final Integer newLengthInteger = -lengthInteger + 1;
+			final int lengthInteger = Integer.parseInt(length.stringValue());
+			final int newLengthInteger = -lengthInteger + 1;
 			final Literal newLength = vf.createLiteral(newLengthInteger);
 			final Statement newStatement = vf.createStatement(segment, lengthProperty, newLength);
 			con.add(newStatement);

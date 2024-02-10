@@ -26,24 +26,25 @@ import org.eclipse.viatra.query.runtime.matchers.psystem.queries.PParameter;
 import org.eclipse.viatra.query.runtime.matchers.psystem.queries.PParameterDirection;
 import org.eclipse.viatra.query.runtime.matchers.psystem.queries.QueryInitializationException;
 import org.eclipse.viatra.query.runtime.matchers.tuple.FlatTuple;
+import org.eclipse.viatra.query.runtime.matchers.tuple.Tuples;
 
 /**
  * A pattern-specific query specification that can instantiate PosLengthInjectMatcher in a type-safe way.
- * 
+ *
  * @see PosLengthInjectMatcher
  * @see PosLengthInjectMatch
- * 
+ *
  */
 @SuppressWarnings("all")
 public final class PosLengthInjectQuerySpecification extends BaseGeneratedEMFQuerySpecification<PosLengthInjectMatcher> {
   private PosLengthInjectQuerySpecification() {
     super(GeneratedPQuery.INSTANCE);
   }
-  
+
   /**
    * @return the singleton instance of the query specification
    * @throws ViatraQueryException if the pattern definition could not be loaded
-   * 
+   *
    */
   public static PosLengthInjectQuerySpecification instance() throws ViatraQueryException {
     try{
@@ -52,75 +53,75 @@ public final class PosLengthInjectQuerySpecification extends BaseGeneratedEMFQue
         throw processInitializerError(err);
     }
   }
-  
+
   @Override
   protected PosLengthInjectMatcher instantiate(final ViatraQueryEngine engine) throws ViatraQueryException {
     return PosLengthInjectMatcher.on(engine);
   }
-  
+
   @Override
   public PosLengthInjectMatcher instantiate() throws ViatraQueryException {
     return PosLengthInjectMatcher.create();
   }
-  
+
   @Override
   public PosLengthInjectMatch newEmptyMatch() {
     return PosLengthInjectMatch.newEmptyMatch();
   }
-  
+
   @Override
   public PosLengthInjectMatch newMatch(final Object... parameters) {
     return PosLengthInjectMatch.newMatch((hu.bme.mit.trainbenchmark.railway.Segment) parameters[0]);
   }
-  
+
   /**
-   * Inner class allowing the singleton instance of {@link PosLengthInjectQuerySpecification} to be created 
-   *     <b>not</b> at the class load time of the outer class, 
+   * Inner class allowing the singleton instance of {@link PosLengthInjectQuerySpecification} to be created
+   *     <b>not</b> at the class load time of the outer class,
    *     but rather at the first call to {@link PosLengthInjectQuerySpecification#instance()}.
-   * 
+   *
    * <p> This workaround is required e.g. to support recursion.
-   * 
+   *
    */
   private static class LazyHolder {
     private final static PosLengthInjectQuerySpecification INSTANCE = new PosLengthInjectQuerySpecification();
-    
+
     /**
      * Statically initializes the query specification <b>after</b> the field {@link #INSTANCE} is assigned.
      * This initialization order is required to support indirect recursion.
-     * 
+     *
      * <p> The static initializer is defined using a helper field to work around limitations of the code generator.
-     * 
+     *
      */
     private final static Object STATIC_INITIALIZER = ensureInitialized();
-    
+
     public static Object ensureInitialized() {
-      INSTANCE.ensureInitializedInternalSneaky();
+      INSTANCE.ensureInitializedInternal();
       return null;
     }
   }
-  
+
   private static class GeneratedPQuery extends BaseGeneratedEMFPQuery {
     private final static PosLengthInjectQuerySpecification.GeneratedPQuery INSTANCE = new GeneratedPQuery();
-    
+
     private final PParameter parameter_pSegment = new PParameter("segment", "hu.bme.mit.trainbenchmark.railway.Segment", (IInputKey)null, PParameterDirection.INOUT);
-    
+
     private final List<PParameter> parameters = Arrays.asList(parameter_pSegment);
-    
+
     @Override
     public String getFullyQualifiedName() {
       return "hu.bme.mit.trainbenchmark.benchmark.viatra.posLengthInject";
     }
-    
+
     @Override
     public List<String> getParameterNames() {
       return Arrays.asList("segment");
     }
-    
+
     @Override
     public List<PParameter> getParameters() {
       return parameters;
     }
-    
+
     @Override
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       setEvaluationHints(new QueryEvaluationHint(null, (IQueryBackendFactory)null));
@@ -133,7 +134,7 @@ public final class PosLengthInjectQuerySpecification extends BaseGeneratedEMFQue
                  new ExportedParameter(body, var_segment, parameter_pSegment)
               ));
               // 	Segment(segment)
-              new TypeConstraint(body, new FlatTuple(var_segment), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.semanticweb.org/ontologies/2015/trainbenchmark", "Segment")));
+              new TypeConstraint(body, Tuples.flatTupleOf(var_segment), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.semanticweb.org/ontologies/2015/trainbenchmark", "Segment")));
               bodies.add(body);
           }
           // to silence compiler error

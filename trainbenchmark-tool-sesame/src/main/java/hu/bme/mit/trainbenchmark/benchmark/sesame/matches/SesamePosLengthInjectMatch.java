@@ -14,9 +14,9 @@ package hu.bme.mit.trainbenchmark.benchmark.sesame.matches;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_LENGTH;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEGMENT;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import hu.bme.mit.trainbenchmark.benchmark.matches.PosLengthMatch;
 
@@ -27,8 +27,8 @@ public class SesamePosLengthInjectMatch extends SesameMatch implements PosLength
 	}
 
 	@Override
-	public URI getSegment() {
-		return (URI) bs.getValue(VAR_SEGMENT);
+	public IRI getSegment() {
+		return (IRI) bs.getValue(VAR_SEGMENT);
 	}
 
 	public Value getLength() {

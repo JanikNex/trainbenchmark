@@ -11,18 +11,11 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.sesame.matches;
 
-import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_ROUTE1;
-import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_ROUTE2;
-import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEMAPHORE;
-import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SENSOR1;
-import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SENSOR2;
-import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_TE1;
-import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_TE2;
-
-import org.openrdf.model.URI;
-import org.openrdf.query.BindingSet;
-
 import hu.bme.mit.trainbenchmark.benchmark.matches.SemaphoreNeighborMatch;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.BindingSet;
+
+import static hu.bme.mit.trainbenchmark.constants.QueryConstants.*;
 
 public class SesameSemaphoreNeighborMatch extends SesameMatch implements SemaphoreNeighborMatch {
 
@@ -31,38 +24,38 @@ public class SesameSemaphoreNeighborMatch extends SesameMatch implements Semapho
 	}
 
 	@Override
-	public URI getSemaphore() {
-		return (URI) bs.getValue(VAR_SEMAPHORE);
+	public IRI getSemaphore() {
+		return (IRI) bs.getValue(VAR_SEMAPHORE);
 	}
 
 	@Override
-	public URI getRoute1() {
-		return (URI) bs.getValue(VAR_ROUTE1);
+	public IRI getRoute1() {
+		return (IRI) bs.getValue(VAR_ROUTE1);
 	}
 
 	@Override
-	public URI getRoute2() {
-		return (URI) bs.getValue(VAR_ROUTE2);
+	public IRI getRoute2() {
+		return (IRI) bs.getValue(VAR_ROUTE2);
 	}
 
 	@Override
-	public URI getSensor1() {
-		return (URI) bs.getValue(VAR_SENSOR1);
+	public IRI getSensor1() {
+		return (IRI) bs.getValue(VAR_SENSOR1);
 	}
 
 	@Override
-	public URI getSensor2() {
-		return (URI) bs.getValue(VAR_SENSOR2);
+	public IRI getSensor2() {
+		return (IRI) bs.getValue(VAR_SENSOR2);
 	}
 
 	@Override
-	public URI getTe1() {
-		return (URI) bs.getValue(VAR_TE1);
+	public IRI getTe1() {
+		return (IRI) bs.getValue(VAR_TE1);
 	}
 
 	@Override
-	public URI getTe2() {
-		return (URI) bs.getValue(VAR_TE2);
+	public IRI getTe2() {
+		return (IRI) bs.getValue(VAR_TE2);
 	}
 
 }

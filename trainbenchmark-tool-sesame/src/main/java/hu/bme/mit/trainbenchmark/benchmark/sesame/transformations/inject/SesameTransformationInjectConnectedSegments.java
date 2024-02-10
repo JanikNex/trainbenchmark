@@ -15,11 +15,11 @@ import hu.bme.mit.trainbenchmark.benchmark.sesame.driver.SesameDriver;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesameConnectedSegmentsInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.transformations.SesameTransformation;
 import hu.bme.mit.trainbenchmark.constants.TrainBenchmarkConstants;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.repository.RepositoryConnection;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import java.util.Collection;
 
@@ -41,16 +41,16 @@ public class SesameTransformationInjectConnectedSegments<TSesameDriver extends S
 		final RepositoryConnection connection = driver.getConnection();
 		final ValueFactory vf = driver.getValueFactory();
 
-		final URI length = vf.createURI(BASE_PREFIX + LENGTH);
-		final URI connectsTo = vf.createURI(BASE_PREFIX + CONNECTS_TO);
-		final URI monitoredBy = vf.createURI(BASE_PREFIX + MONITORED_BY);
-		final URI segmentType = vf.createURI(BASE_PREFIX + SEGMENT);
+		final IRI length = vf.createIRI(BASE_PREFIX + LENGTH);
+		final IRI connectsTo = vf.createIRI(BASE_PREFIX + CONNECTS_TO);
+		final IRI monitoredBy = vf.createIRI(BASE_PREFIX + MONITORED_BY);
+		final IRI segmentType = vf.createIRI(BASE_PREFIX + SEGMENT);
 		final Literal lengthLiteral = vf.createLiteral(TrainBenchmarkConstants.DEFAULT_SEGMENT_LENGTH);
 
 		for (final SesameConnectedSegmentsInjectMatch match : matches) {
 			// create (segment2) node
 			final Long newVertexId = driver.generateNewVertexId();
-			final URI segment2 = vf.createURI(BASE_PREFIX + ID_PREFIX + newVertexId);
+			final IRI segment2 = vf.createIRI(BASE_PREFIX + ID_PREFIX + newVertexId);
 			connection.add(segment2, RDF.TYPE, segmentType);
 			connection.add(segment2, length, lengthLiteral);
 

@@ -16,7 +16,7 @@ import org.neo4j.graphdb.Node;
 import hu.bme.mit.trainbenchmark.benchmark.matches.comparators.BaseMatchComparator;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jMatch;
 
-public class Neo4jMatchComparator extends BaseMatchComparator<Neo4jMatch, Node> {
+public class Neo4jMatchComparator extends BaseMatchComparator<Neo4jMatch, String> {
 
 	public Neo4jMatchComparator() {
 		super(new NodeComparator());

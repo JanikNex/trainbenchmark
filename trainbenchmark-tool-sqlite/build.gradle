@@ -1,12 +1,12 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.sqlite.SQLiteBenchmarkMain' }
 }
 
 dependencies {
-	compile project(':trainbenchmark-tool')
-	compile project(':trainbenchmark-tool-sql')
-	compile group: 'org.xerial', name: 'sqlite-jdbc', version: sqliteVersion
+	api project(':trainbenchmark-tool')
+	api project(':trainbenchmark-tool-sql')
+	api group: 'org.xerial', name: 'sqlite-jdbc', version: sqliteVersion
 }

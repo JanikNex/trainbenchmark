@@ -12,6 +12,7 @@
 package hu.bme.mit.trainbenchmark.benchmark.jena.driver;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -36,6 +37,7 @@ import org.apache.jena.reasoner.ReasonerRegistry;
 import hu.bme.mit.trainbenchmark.benchmark.rdf.driver.RdfDriver;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
 import hu.bme.mit.trainbenchmark.rdf.RdfConstants;
+import org.apache.jena.riot.RDFDataMgr;
 
 public class JenaDriver extends RdfDriver {
 
@@ -52,9 +54,11 @@ public class JenaDriver extends RdfDriver {
 	}
 
 	@Override
-	public void read(final String modelPath) throws IOException {
-		final Model defaultModel = ModelFactory.createDefaultModel();
-		defaultModel.read(modelPath);
+	public void read(final String modelPathStr) throws IOException {
+		Path modelPath = Path.of(modelPathStr);
+		String canonicalFileUri = modelPath.toFile().getCanonicalFile().toURI().toString();
+
+		final Model defaultModel = RDFDataMgr.loadModel(canonicalFileUri);
 
 		// run inferencing if required
 		if (inferencing) {

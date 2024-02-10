@@ -13,10 +13,11 @@ package hu.bme.mit.trainbenchmark.benchmark.janusgraph.driver;
 
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.GraphDriver;
 import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.apache.tinkerpop.gremlin.structure.util.GraphFactory;
+import org.janusgraph.core.JanusGraphFactory;
+import org.janusgraph.graphdb.configuration.GraphDatabaseConfiguration;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -30,8 +31,9 @@ public class JanusGraphDriver extends GraphDriver<Graph> {
 	@Override
 	public void read(final String modelPath) throws XMLStreamException, IOException, ConfigurationException {
 		//final PropertiesConfiguration conf = new PropertiesConfiguration("conf/jgex-berkeleyje.properties");
-		final PropertiesConfiguration conf = new PropertiesConfiguration("conf/jgex-inmemory.properties");
-		graph = GraphFactory.open(conf);
+		//final PropertiesConfiguration conf = new PropertiesConfiguration("conf/jgex-inmemory.properties");
+		//graph = GraphFactory.open(conf);
+		graph = JanusGraphFactory.open("conf/jgex-inmemory.properties");
 		graph.io(IoCore.graphml()).readGraph(modelPath);
 	}
 

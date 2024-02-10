@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 import static hu.bme.mit.trainbenchmark.sql.constants.SqlConstants.PASSWORD;
 import static hu.bme.mit.trainbenchmark.sql.constants.SqlConstants.USER;
@@ -31,17 +33,22 @@ public class MySqlDriver extends SqlDriver {
 
 	@Override
 	public void read(final String modelPath) throws IOException, InterruptedException, SQLException {
-		final Runtime rt = Runtime.getRuntime();
 		final File modelFile = new File(modelPath);
 		if (!modelFile.exists()) {
 			throw new IOException("Model does not exist: " + modelPath);
 		}
 
-		final String[] command = { "/bin/bash", "-c", "mysql -u " + USER + " < " + modelPath };
-		final Process pr = rt.exec(command);
-		pr.waitFor();
-		if (pr.exitValue() != 0) {
-			throw new IOException("MySQL process returned non-zero exit value: " + pr.exitValue());
+		MySqlProcess.runShell("mkdir /var/lib/mysql/trainbenchmark");
+		MySqlProcess.runShell("chown mysql:mysql /var/lib/mysql/trainbenchmark");
+
+		List<String> command = Arrays.asList("mysql", "-u", USER, "-e", String.format("source %s", modelFile.getCanonicalPath()));
+
+		ProcessBuilder builder = new ProcessBuilder(command);
+		Process process = builder.inheritIO().start();
+
+		int exitCode = process.waitFor();
+		if (exitCode != 0) {
+			throw new IOException("MySQL process returned non-zero exit value: " + exitCode);
 		}
 		connection = DriverManager.getConnection(url, USER, PASSWORD);
 	}

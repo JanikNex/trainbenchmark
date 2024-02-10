@@ -28,24 +28,25 @@ import org.eclipse.viatra.query.runtime.matchers.psystem.queries.PParameter;
 import org.eclipse.viatra.query.runtime.matchers.psystem.queries.PParameterDirection;
 import org.eclipse.viatra.query.runtime.matchers.psystem.queries.QueryInitializationException;
 import org.eclipse.viatra.query.runtime.matchers.tuple.FlatTuple;
+import org.eclipse.viatra.query.runtime.matchers.tuple.Tuples;
 
 /**
  * A pattern-specific query specification that can instantiate HasSensorMatcher in a type-safe way.
- * 
+ *
  * @see HasSensorMatcher
  * @see HasSensorMatch
- * 
+ *
  */
 @SuppressWarnings("all")
 public final class HasSensorQuerySpecification extends BaseGeneratedEMFQuerySpecification<HasSensorMatcher> {
   private HasSensorQuerySpecification() {
     super(GeneratedPQuery.INSTANCE);
   }
-  
+
   /**
    * @return the singleton instance of the query specification
    * @throws ViatraQueryException if the pattern definition could not be loaded
-   * 
+   *
    */
   public static HasSensorQuerySpecification instance() throws ViatraQueryException {
     try{
@@ -54,75 +55,75 @@ public final class HasSensorQuerySpecification extends BaseGeneratedEMFQuerySpec
         throw processInitializerError(err);
     }
   }
-  
+
   @Override
   protected HasSensorMatcher instantiate(final ViatraQueryEngine engine) throws ViatraQueryException {
     return HasSensorMatcher.on(engine);
   }
-  
+
   @Override
   public HasSensorMatcher instantiate() throws ViatraQueryException {
     return HasSensorMatcher.create();
   }
-  
+
   @Override
   public HasSensorMatch newEmptyMatch() {
     return HasSensorMatch.newEmptyMatch();
   }
-  
+
   @Override
   public HasSensorMatch newMatch(final Object... parameters) {
     return HasSensorMatch.newMatch((hu.bme.mit.trainbenchmark.railway.TrackElement) parameters[0]);
   }
-  
+
   /**
-   * Inner class allowing the singleton instance of {@link HasSensorQuerySpecification} to be created 
-   *     <b>not</b> at the class load time of the outer class, 
+   * Inner class allowing the singleton instance of {@link HasSensorQuerySpecification} to be created
+   *     <b>not</b> at the class load time of the outer class,
    *     but rather at the first call to {@link HasSensorQuerySpecification#instance()}.
-   * 
+   *
    * <p> This workaround is required e.g. to support recursion.
-   * 
+   *
    */
   private static class LazyHolder {
     private final static HasSensorQuerySpecification INSTANCE = new HasSensorQuerySpecification();
-    
+
     /**
      * Statically initializes the query specification <b>after</b> the field {@link #INSTANCE} is assigned.
      * This initialization order is required to support indirect recursion.
-     * 
+     *
      * <p> The static initializer is defined using a helper field to work around limitations of the code generator.
-     * 
+     *
      */
     private final static Object STATIC_INITIALIZER = ensureInitialized();
-    
+
     public static Object ensureInitialized() {
-      INSTANCE.ensureInitializedInternalSneaky();
+      INSTANCE.ensureInitializedInternal();
       return null;
     }
   }
-  
+
   private static class GeneratedPQuery extends BaseGeneratedEMFPQuery {
     private final static HasSensorQuerySpecification.GeneratedPQuery INSTANCE = new GeneratedPQuery();
-    
+
     private final PParameter parameter_pSw = new PParameter("sw", "hu.bme.mit.trainbenchmark.railway.TrackElement", (IInputKey)null, PParameterDirection.INOUT);
-    
+
     private final List<PParameter> parameters = Arrays.asList(parameter_pSw);
-    
+
     @Override
     public String getFullyQualifiedName() {
       return "hu.bme.mit.trainbenchmark.benchmark.viatra.hasSensor";
     }
-    
+
     @Override
     public List<String> getParameterNames() {
       return Arrays.asList("sw");
     }
-    
+
     @Override
     public List<PParameter> getParameters() {
       return parameters;
     }
-    
+
     @Override
     public Set<PBody> doGetContainedBodies() throws QueryInitializationException {
       setEvaluationHints(new QueryEvaluationHint(null, (IQueryBackendFactory)null));
@@ -136,10 +137,10 @@ public final class HasSensorQuerySpecification extends BaseGeneratedEMFQuerySpec
                  new ExportedParameter(body, var_sw, parameter_pSw)
               ));
               // 	TrackElement.monitoredBy(sw, _)
-              new TypeConstraint(body, new FlatTuple(var_sw), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.semanticweb.org/ontologies/2015/trainbenchmark", "TrackElement")));
+              new TypeConstraint(body, Tuples.flatTupleOf(var_sw), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.semanticweb.org/ontologies/2015/trainbenchmark", "TrackElement")));
               PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-              new TypeConstraint(body, new FlatTuple(var_sw, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.semanticweb.org/ontologies/2015/trainbenchmark", "TrackElement", "monitoredBy")));
-              new TypeConstraint(body, new FlatTuple(var__virtual_0_), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.semanticweb.org/ontologies/2015/trainbenchmark", "Sensor")));
+              new TypeConstraint(body, Tuples.flatTupleOf(var_sw, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://www.semanticweb.org/ontologies/2015/trainbenchmark", "TrackElement", "monitoredBy")));
+              new TypeConstraint(body, Tuples.flatTupleOf(var__virtual_0_), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://www.semanticweb.org/ontologies/2015/trainbenchmark", "Sensor")));
               new Equality(body, var__virtual_0_, var___0_);
               bodies.add(body);
           }

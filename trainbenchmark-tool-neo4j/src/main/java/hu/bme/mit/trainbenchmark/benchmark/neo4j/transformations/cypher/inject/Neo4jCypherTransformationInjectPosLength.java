@@ -17,6 +17,7 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jPosLengthInjectMat
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jCypherTransformation;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
+import org.neo4j.graphdb.Transaction;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -30,11 +31,12 @@ public class Neo4jCypherTransformationInjectPosLength extends Neo4jCypherTransfo
 
 	@Override
 	public void activate(final Collection<Neo4jPosLengthInjectMatch> matches) throws IOException {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jPosLengthInjectMatch match : matches) {
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SEGMENT, match.getSegment() //
+				QueryConstants.VAR_SEGMENT, tx.getNodeByElementId(match.getSegment()) //
 			);
-			driver.runTransformation(transformationDefinition, parameters);
+			driver.runTransformation(tx, transformationDefinition, parameters);
 		}
 	}
 

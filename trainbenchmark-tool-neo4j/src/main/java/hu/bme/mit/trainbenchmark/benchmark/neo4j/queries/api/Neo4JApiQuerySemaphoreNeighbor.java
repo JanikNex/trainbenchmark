@@ -47,7 +47,7 @@ public class Neo4JApiQuerySemaphoreNeighbor extends Neo4jApiQuery<Neo4jSemaphore
 
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (final Transaction tx = graphDb.beginTx()) {
-			final Iterable<Node> route1s = () -> graphDb.findNodes(Neo4jConstants.labelRoute);
+			final Iterable<Node> route1s = () -> tx.findNodes(Neo4jConstants.labelRoute);
 			for (final Node route1 : route1s) {
 				// (route1:Route)-[:exit]->(semaphore:Semaphore)
 				final Iterable<Node> semaphores = Neo4jUtil.getAdjacentNodes(route1, Neo4jConstants.relationshipTypeExit,
@@ -78,13 +78,13 @@ public class Neo4JApiQuerySemaphoreNeighbor extends Neo4jApiQuery<Neo4jSemaphore
 										// (route2)-[:entry]->(semaphore) NAC
 										if (!Neo4jUtil.isConnected(route2, semaphore, Neo4jConstants.relationshipTypeEntry)) {
 											final Map<String, Object> match = new HashMap<>();
-											match.put(VAR_SEMAPHORE, semaphore);
-											match.put(VAR_ROUTE1, route1);
-											match.put(VAR_ROUTE2, route2);
-											match.put(VAR_SENSOR1, sensor1);
-											match.put(VAR_SENSOR2, sensor2);
-											match.put(VAR_TE1, te1);
-											match.put(VAR_TE2, te2);
+											match.put(VAR_SEMAPHORE, semaphore.getElementId());
+											match.put(VAR_ROUTE1, route1.getElementId());
+											match.put(VAR_ROUTE2, route2.getElementId());
+											match.put(VAR_SENSOR1, sensor1.getElementId());
+											match.put(VAR_SENSOR2, sensor2.getElementId());
+											match.put(VAR_TE1, te1.getElementId());
+											match.put(VAR_TE2, te2.getElementId());
 											matches.add(new Neo4jSemaphoreNeighborMatch(match));
 											break;
 										}

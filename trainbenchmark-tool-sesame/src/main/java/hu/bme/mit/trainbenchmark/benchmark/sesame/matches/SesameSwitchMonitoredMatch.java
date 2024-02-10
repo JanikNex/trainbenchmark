@@ -13,8 +13,8 @@ package hu.bme.mit.trainbenchmark.benchmark.sesame.matches;
 
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SW;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import hu.bme.mit.trainbenchmark.benchmark.matches.SwitchMonitoredMatch;
 
@@ -25,8 +25,8 @@ public class SesameSwitchMonitoredMatch extends SesameMatch implements SwitchMon
 	}
 
 	@Override
-	public URI getSw() {
-		return (URI) bs.getValue(VAR_SW);
+	public IRI getSw() {
+		return (IRI) bs.getValue(VAR_SW);
 	}
 
 }

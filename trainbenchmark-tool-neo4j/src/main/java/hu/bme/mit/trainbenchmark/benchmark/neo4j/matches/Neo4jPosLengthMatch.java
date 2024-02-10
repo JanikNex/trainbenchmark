@@ -26,8 +26,8 @@ public class Neo4jPosLengthMatch extends Neo4jMatch implements PosLengthMatch {
 	}
 
 	@Override
-	public Node getSegment() {
-		return (Node) match.get(VAR_SEGMENT);
+	public String getSegment() {
+		return (String) match.get(VAR_SEGMENT);
 	}
 
 }

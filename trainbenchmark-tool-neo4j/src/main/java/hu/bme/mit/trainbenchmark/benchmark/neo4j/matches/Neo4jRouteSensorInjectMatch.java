@@ -25,13 +25,13 @@ public class Neo4jRouteSensorInjectMatch extends Neo4jMatch implements RouteSens
 	}
 
 	@Override
-	public Node getRoute() {
-		return (Node) match.get(QueryConstants.VAR_ROUTE);
+	public String getRoute() {
+		return (String) match.get(QueryConstants.VAR_ROUTE);
 	}
 
 	@Override
-	public Node getSensor() {
-		return (Node) match.get(QueryConstants.VAR_SENSOR);
+	public String getSensor() {
+		return (String) match.get(QueryConstants.VAR_SENSOR);
 	}
 
 }

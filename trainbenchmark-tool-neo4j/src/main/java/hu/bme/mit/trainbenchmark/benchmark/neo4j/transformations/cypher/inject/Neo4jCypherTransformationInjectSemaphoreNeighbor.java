@@ -17,28 +17,33 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jSemaphoreNeighborI
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jCypherTransformation;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
 public class Neo4jCypherTransformationInjectSemaphoreNeighbor
-		extends Neo4jCypherTransformation<Neo4jSemaphoreNeighborInjectMatch> {
+	extends Neo4jCypherTransformation<Neo4jSemaphoreNeighborInjectMatch> {
 
 	public Neo4jCypherTransformationInjectSemaphoreNeighbor(final Neo4jDriver driver, final String workspaceDir)
-			throws IOException {
+		throws IOException {
 		super(driver, workspaceDir, RailwayOperation.SEMAPHORENEIGHBOR_INJECT);
 	}
 
 	@Override
 	public void activate(final Collection<Neo4jSemaphoreNeighborInjectMatch> matches) throws IOException {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jSemaphoreNeighborInjectMatch match : matches) {
+			Node route = tx.getNodeByElementId(match.getRoute());
+			Node semaphore = tx.getNodeByElementId(match.getSemaphore());
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_ROUTE, match.getRoute(), //
-					QueryConstants.VAR_SEMAPHORE, match.getSemaphore() //
+				QueryConstants.VAR_ROUTE, route, //
+				QueryConstants.VAR_SEMAPHORE, semaphore //
 			);
 
-			driver.runTransformation(transformationDefinition, parameters);
+			driver.runTransformation(tx, transformationDefinition, parameters);
 		}
 	}
 

@@ -19,8 +19,8 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEGMENT5;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEGMENT6;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SENSOR;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import hu.bme.mit.trainbenchmark.benchmark.matches.ConnectedSegmentsMatch;
 
@@ -31,38 +31,38 @@ public class SesameConnectedSegmentsMatch extends SesameMatch implements Connect
 	}
 
 	@Override
-	public URI getSensor() {
-		return (URI) bs.getValue(VAR_SENSOR);
+	public IRI getSensor() {
+		return (IRI) bs.getValue(VAR_SENSOR);
 	}
 
 	@Override
-	public URI getSegment1() {
-		return (URI) bs.getValue(VAR_SEGMENT1);
+	public IRI getSegment1() {
+		return (IRI) bs.getValue(VAR_SEGMENT1);
 	}
 
 	@Override
-	public URI getSegment2() {
-		return (URI) bs.getValue(VAR_SEGMENT2);
+	public IRI getSegment2() {
+		return (IRI) bs.getValue(VAR_SEGMENT2);
 	}
 
 	@Override
-	public URI getSegment3() {
-		return (URI) bs.getValue(VAR_SEGMENT3);
+	public IRI getSegment3() {
+		return (IRI) bs.getValue(VAR_SEGMENT3);
 	}
 
 	@Override
-	public URI getSegment4() {
-		return (URI) bs.getValue(VAR_SEGMENT4);
+	public IRI getSegment4() {
+		return (IRI) bs.getValue(VAR_SEGMENT4);
 	}
 
 	@Override
-	public URI getSegment5() {
-		return (URI) bs.getValue(VAR_SEGMENT5);
+	public IRI getSegment5() {
+		return (IRI) bs.getValue(VAR_SEGMENT5);
 	}
 
 	@Override
-	public URI getSegment6() {
-		return (URI) bs.getValue(VAR_SEGMENT6);
+	public IRI getSegment6() {
+		return (IRI) bs.getValue(VAR_SEGMENT6);
 	}
 
 }

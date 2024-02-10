@@ -26,8 +26,8 @@ public class Neo4jSwitchMonitoredInjectMatch extends Neo4jMatch implements Switc
 	}
 
 	@Override
-	public Node getSw() {
-		return (Node) match.get(VAR_SW);
+	public String getSw() {
+		return (String) match.get(VAR_SW);
 	}
 
 }

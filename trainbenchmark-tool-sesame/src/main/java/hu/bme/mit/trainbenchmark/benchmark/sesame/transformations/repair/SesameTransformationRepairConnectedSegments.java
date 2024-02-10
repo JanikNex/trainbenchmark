@@ -16,12 +16,12 @@ import static hu.bme.mit.trainbenchmark.rdf.RdfConstants.BASE_PREFIX;
 
 import java.util.Collection;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import hu.bme.mit.trainbenchmark.benchmark.sesame.driver.SesameDriver;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesameConnectedSegmentsMatch;
@@ -38,7 +38,7 @@ public class SesameTransformationRepairConnectedSegments<TSesameDriver extends S
 		final RepositoryConnection con = driver.getConnection();
 		final ValueFactory vf = driver.getValueFactory();
 
-		final URI connectsTo = vf.createURI(BASE_PREFIX + CONNECTS_TO);
+		final IRI connectsTo = vf.createIRI(BASE_PREFIX + CONNECTS_TO);
 		for (final SesameConnectedSegmentsMatch match : matches) {
 			// delete segment2 by removing all (segment2, _, _) and (_, _, segment2) triples
 			final RepositoryResult<Statement> outgoingEdges = con.getStatements(match.getSegment2(), null, null, true);

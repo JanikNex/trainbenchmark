@@ -19,11 +19,11 @@ import static hu.bme.mit.trainbenchmark.rdf.RdfConstants.ID_PREFIX;
 
 import java.util.Collection;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.model.vocabulary.RDF;
-import org.openrdf.repository.RepositoryConnection;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
 
 import hu.bme.mit.trainbenchmark.benchmark.sesame.driver.SesameDriver;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesameSwitchMonitoredMatch;
@@ -40,14 +40,14 @@ public class SesameTransformationRepairSwitchMonitored<TSesameDriver extends Ses
 		final RepositoryConnection con = driver.getConnection();
 		final ValueFactory vf = driver.getValueFactory();
 
-		final URI sensorEdgeType = vf.createURI(BASE_PREFIX + MONITORED_BY);
-		final URI sensorType = vf.createURI(BASE_PREFIX + SENSOR);
-		final URI trackElementType = vf.createURI(BASE_PREFIX + TRACKELEMENT);
+		final IRI sensorEdgeType = vf.createIRI(BASE_PREFIX + MONITORED_BY);
+		final IRI sensorType = vf.createIRI(BASE_PREFIX + SENSOR);
+		final IRI trackElementType = vf.createIRI(BASE_PREFIX + TRACKELEMENT);
 
 		for (final SesameSwitchMonitoredMatch match : matches) {
 			final Resource sw = match.getSw();
 
-			final URI sensor = vf.createURI(BASE_PREFIX + ID_PREFIX + driver.generateNewVertexId());
+			final IRI sensor = vf.createIRI(BASE_PREFIX + ID_PREFIX + driver.generateNewVertexId());
 
 			// set vertex type
 			con.add(sensor, RDF.TYPE, sensorType);

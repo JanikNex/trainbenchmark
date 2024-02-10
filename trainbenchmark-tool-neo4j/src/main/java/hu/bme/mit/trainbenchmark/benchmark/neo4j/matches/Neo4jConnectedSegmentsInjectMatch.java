@@ -28,18 +28,18 @@ public class Neo4jConnectedSegmentsInjectMatch extends Neo4jMatch implements Con
 	}
 
 	@Override
-	public Node getSensor() {
-		return (Node) match.get(VAR_SENSOR);
+	public String getSensor() {
+		return (String) match.get(VAR_SENSOR);
 	}
 
 	@Override
-	public Node getSegment1() {
-		return (Node) match.get(VAR_SEGMENT1);
+	public String getSegment1() {
+		return (String) match.get(VAR_SEGMENT1);
 	}
 
 	@Override
-	public Node getSegment3() {
-		return (Node) match.get(VAR_SEGMENT3);
+	public String getSegment3() {
+		return (String) match.get(VAR_SEGMENT3);
 	}
 
 }

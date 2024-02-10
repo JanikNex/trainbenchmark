@@ -40,10 +40,10 @@ public class Neo4JApiQuerySwitchSetInject extends Neo4jApiQuery<Neo4jSwitchSetIn
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (Transaction tx = graphDb.beginTx()) {
 			// (sw:Switch)
-			final Iterable<Node> sws = () -> graphDb.findNodes(Neo4jConstants.labelSwitch);
+			final Iterable<Node> sws = () -> tx.findNodes(Neo4jConstants.labelSwitch);
 			for (final Node sw : sws) {
 				final Map<String, Object> match = new HashMap<>();
-				match.put(QueryConstants.VAR_SW, sw);
+				match.put(QueryConstants.VAR_SW, sw.getElementId());
 				matches.add(new Neo4jSwitchSetInjectMatch(match));
 			}
 		}

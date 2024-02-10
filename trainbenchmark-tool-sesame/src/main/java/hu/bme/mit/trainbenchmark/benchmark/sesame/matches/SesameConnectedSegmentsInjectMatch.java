@@ -15,8 +15,8 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEGMENT1;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEGMENT3;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SENSOR;
 
-import org.openrdf.model.URI;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import hu.bme.mit.trainbenchmark.benchmark.matches.ConnectedSegmentsInjectMatch;
 
@@ -27,18 +27,18 @@ public class SesameConnectedSegmentsInjectMatch extends SesameMatch implements C
 	}
 
 	@Override
-	public URI getSensor() {
-		return (URI) bs.getValue(VAR_SENSOR);
+	public IRI getSensor() {
+		return (IRI) bs.getValue(VAR_SENSOR);
 	}
 
 	@Override
-	public URI getSegment1() {
-		return (URI) bs.getValue(VAR_SEGMENT1);
+	public IRI getSegment1() {
+		return (IRI) bs.getValue(VAR_SEGMENT1);
 	}
 
 	@Override
-	public URI getSegment3() {
-		return (URI) bs.getValue(VAR_SEGMENT3);
+	public IRI getSegment3() {
+		return (IRI) bs.getValue(VAR_SEGMENT3);
 	}
 
 }

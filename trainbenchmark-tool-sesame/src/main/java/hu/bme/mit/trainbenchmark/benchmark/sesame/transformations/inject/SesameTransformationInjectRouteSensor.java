@@ -15,11 +15,11 @@ import hu.bme.mit.trainbenchmark.benchmark.sesame.driver.SesameDriver;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesameRouteSensorInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.transformations.SesameTransformation;
 import hu.bme.mit.trainbenchmark.constants.ModelConstants;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +39,7 @@ public class SesameTransformationInjectRouteSensor<TSesameDriver extends SesameD
 		final ValueFactory vf = connection.getValueFactory();
 
 		final List<Statement> statementsToRemove = new ArrayList<>(matches.size());
-		final URI requires = vf.createURI(BASE_PREFIX + ModelConstants.REQUIRES);
+		final IRI requires = vf.createIRI(BASE_PREFIX + ModelConstants.REQUIRES);
 		for (final SesameRouteSensorInjectMatch match : matches) {
 			final Statement statement = vf.createStatement(match.getRoute(), requires, match.getSensor());
 			statementsToRemove.add(statement);

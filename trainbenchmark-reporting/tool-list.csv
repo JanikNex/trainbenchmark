@@ -1,11 +1,15 @@
 Tool
 EMF API
-Jena (Inferencing)
-Jena (No Inferencing)
+Jena (Inferencing-ttl)
+Jena (No Inferencing-ttl)
+Jena (No Inferencing-nt)
 MySQL
-Neo4j (Core API-CSV)
-Neo4j (Cypher-GraphML)
+Neo4j (embedded-Core API-CSV)
+Neo4j (embedded-Core API-GraphML)
+Neo4j (embedded-Cypher-GraphML)
+Neo4j (in-memory-Cypher-GraphML)
 SQLite
-TinkerGraph
+TinkerGraph (Core API)
+TinkerGraph (Gremlin)
 VIATRA (Incremental)
 VIATRA (Local Search)

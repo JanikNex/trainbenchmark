@@ -17,7 +17,9 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jPosLengthMatch;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jCypherTransformation;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
+import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.graphdb.Transaction;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -31,12 +33,14 @@ public class Neo4jCypherTransformationRepairPosLength extends Neo4jCypherTransfo
 
 	@Override
 	public void activate(final Collection<Neo4jPosLengthMatch> matches) throws IOException {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jPosLengthMatch match : matches) {
+			Node segment = tx.getNodeByElementId(match.getSegment());
 			try {
 				final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SEGMENT, match.getSegment() //
+					QueryConstants.VAR_SEGMENT, segment //
 				);
-				driver.runTransformation(transformationDefinition, parameters);
+				driver.runTransformation(tx, transformationDefinition, parameters);
 			} catch (final NotFoundException e) {
 				// do nothing (node has been removed)
 			}

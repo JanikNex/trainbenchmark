@@ -32,38 +32,38 @@ public class Neo4jConnectedSegmentsMatch extends Neo4jMatch implements Connected
 	}
 
 	@Override
-	public Node getSensor() {
-		return (Node) match.get(VAR_SENSOR);
+	public String getSensor() {
+		return (String) match.get(VAR_SENSOR);
 	}
 
 	@Override
-	public Node getSegment1() {
-		return (Node) match.get(VAR_SEGMENT1);
+	public String getSegment1() {
+		return (String) match.get(VAR_SEGMENT1);
 	}
 
 	@Override
-	public Node getSegment2() {
-		return (Node) match.get(VAR_SEGMENT2);
+	public String getSegment2() {
+		return (String) match.get(VAR_SEGMENT2);
 	}
 
 	@Override
-	public Node getSegment3() {
-		return (Node) match.get(VAR_SEGMENT3);
+	public String getSegment3() {
+		return (String) match.get(VAR_SEGMENT3);
 	}
 
 	@Override
-	public Node getSegment4() {
-		return (Node) match.get(VAR_SEGMENT4);
+	public String getSegment4() {
+		return (String) match.get(VAR_SEGMENT4);
 	}
 
 	@Override
-	public Node getSegment5() {
-		return (Node) match.get(VAR_SEGMENT5);
+	public String getSegment5() {
+		return (String) match.get(VAR_SEGMENT5);
 	}
 
 	@Override
-	public Node getSegment6() {
-		return (Node) match.get(VAR_SEGMENT6);
+	public String getSegment6() {
+		return (String) match.get(VAR_SEGMENT6);
 	}
 
 }

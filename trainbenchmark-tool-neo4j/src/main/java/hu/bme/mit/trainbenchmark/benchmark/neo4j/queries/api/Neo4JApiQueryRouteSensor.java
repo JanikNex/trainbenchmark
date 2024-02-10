@@ -45,7 +45,7 @@ public class Neo4JApiQueryRouteSensor extends Neo4jApiQuery<Neo4jRouteSensorMatc
 
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (final Transaction tx = graphDb.beginTx()) {
-			final Iterable<Node> routes = () -> graphDb.findNodes(Neo4jConstants.labelRoute);
+			final Iterable<Node> routes = () -> tx.findNodes(Neo4jConstants.labelRoute);
 			for (final Node route : routes) {
 				// (route:Route)-[:follows]->(swp:switchPosition)
 				final Iterable<Node> swPs = Neo4jUtil.getAdjacentNodes(route, Neo4jConstants.relationshipTypeFollows, Direction.OUTGOING, Neo4jConstants.labelSwitchPosition);
@@ -59,10 +59,10 @@ public class Neo4JApiQueryRouteSensor extends Neo4jApiQuery<Neo4jRouteSensorMatc
 							// (sensor:Sensor)<-[:requires]-(route:Route) NAC
 							if (!Neo4jUtil.isConnected(route, sensor, Neo4jConstants.relationshipTypeRequires)) {
 								final Map<String, Object> match = new HashMap<>();
-								match.put(VAR_ROUTE, route);
-								match.put(VAR_SENSOR, sensor);
-								match.put(VAR_SWP, swP);
-								match.put(VAR_SW, sw);
+								match.put(VAR_ROUTE, route.getElementId());
+								match.put(VAR_SENSOR, sensor.getElementId());
+								match.put(VAR_SWP, swP.getElementId());
+								match.put(VAR_SW, sw.getElementId());
 								matches.add(new Neo4jRouteSensorMatch(match));
 							}
 						}

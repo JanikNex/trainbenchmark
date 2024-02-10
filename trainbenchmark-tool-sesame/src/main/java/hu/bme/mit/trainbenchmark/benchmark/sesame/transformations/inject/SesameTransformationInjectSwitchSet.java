@@ -16,12 +16,12 @@ import static hu.bme.mit.trainbenchmark.rdf.RdfConstants.BASE_PREFIX;
 
 import java.util.Collection;
 
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import hu.bme.mit.trainbenchmark.benchmark.sesame.driver.SesameDriver;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesameSwitchSetInjectMatch;
@@ -40,10 +40,10 @@ public class SesameTransformationInjectSwitchSet<TSesameDriver extends SesameDri
 		final RepositoryConnection con = driver.getConnection();
 		final ValueFactory vf = driver.getValueFactory();
 
-		final URI currentPositionProperty = vf.createURI(BASE_PREFIX + CURRENTPOSITION);
+		final IRI currentPositionProperty = vf.createIRI(BASE_PREFIX + CURRENTPOSITION);
 
 		for (final SesameSwitchSetInjectMatch match : matches) {
-			final URI sw = match.getSw();
+			final IRI sw = match.getSw();
 			final RepositoryResult<Statement> statements = con.getStatements(sw, currentPositionProperty, null, true);
 			if (!statements.hasNext()) {
 				continue;
@@ -55,13 +55,13 @@ public class SesameTransformationInjectSwitchSet<TSesameDriver extends SesameDri
 			con.remove(oldStatement);
 
 			// get next enum value
-			final URI currentPositionURI = (URI) oldStatement.getObject();
-			final String currentPositionRDFString = currentPositionURI.getLocalName();
+			final IRI currentPositionIRI = (IRI) oldStatement.getObject();
+			final String currentPositionRDFString = currentPositionIRI.getLocalName();
 			final String currentPositionString = RdfHelper.removePrefix(Position.class, currentPositionRDFString);
 			final Position currentPosition = Position.valueOf(currentPositionString);
 			final Position newCurrentPosition = Position.values()[(currentPosition.ordinal() + 1) % Position.values().length];
 			final String newCurrentPositionString = RdfHelper.addEnumPrefix(newCurrentPosition);
-			final URI newCurrentPositionUri = vf.createURI(BASE_PREFIX + newCurrentPositionString);
+			final IRI newCurrentPositionUri = vf.createIRI(BASE_PREFIX + newCurrentPositionString);
 
 			// set new value
 			con.add(sw, currentPositionProperty, newCurrentPositionUri);

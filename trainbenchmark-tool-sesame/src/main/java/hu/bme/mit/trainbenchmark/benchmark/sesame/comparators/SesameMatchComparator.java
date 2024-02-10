@@ -11,15 +11,15 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.sesame.comparators;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
 import hu.bme.mit.trainbenchmark.benchmark.matches.comparators.BaseMatchComparator;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesameMatch;
 
-public class SesameMatchComparator extends BaseMatchComparator<SesameMatch, URI> {
+public class SesameMatchComparator extends BaseMatchComparator<SesameMatch, IRI> {
 
 	public SesameMatchComparator() {
-		super(new UriComparator());
+		super(new IriComparator());
 	}
 
 }

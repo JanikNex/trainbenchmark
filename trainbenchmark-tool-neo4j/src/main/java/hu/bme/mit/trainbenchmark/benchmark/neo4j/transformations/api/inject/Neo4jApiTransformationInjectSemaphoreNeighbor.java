@@ -11,14 +11,16 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.api.inject;
 
-import java.util.Collection;
-
-import org.neo4j.graphdb.Relationship;
-
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.driver.Neo4jDriver;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jSemaphoreNeighborInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransformation;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ResourceIterable;
+import org.neo4j.graphdb.Transaction;
+
+import java.util.Collection;
 
 public class Neo4jApiTransformationInjectSemaphoreNeighbor extends Neo4jApiTransformation<Neo4jSemaphoreNeighborInjectMatch> {
 
@@ -28,11 +30,15 @@ public class Neo4jApiTransformationInjectSemaphoreNeighbor extends Neo4jApiTrans
 
 	@Override
 	public void activate(final Collection<Neo4jSemaphoreNeighborInjectMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jSemaphoreNeighborInjectMatch match : matches) {
-			final Iterable<Relationship> entries = match.getRoute().getRelationships(Neo4jConstants.relationshipTypeEntry);
-			for (final Relationship entry : entries) {
-				if (entry.getEndNode().equals(match.getSemaphore())) {
-					entry.delete();
+			Node route = tx.getNodeByElementId(match.getRoute());
+			Node semaphore = tx.getNodeByElementId(match.getSemaphore());
+			try (final ResourceIterable<Relationship> entries = route.getRelationships(Neo4jConstants.relationshipTypeEntry)) {
+				for (final Relationship entry : entries) {
+					if (entry.getEndNode().equals(semaphore)) {
+						entry.delete();
+					}
 				}
 			}
 		}

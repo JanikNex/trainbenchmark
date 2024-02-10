@@ -1,12 +1,12 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.generator.graph.tinkerpop.TinkerGraphGeneratorMain' }
 }
 
 dependencies {
-  compile project(':trainbenchmark-generator')
-  compile group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: tinkerGraphVersion
-  compile group: 'org.slf4j', name: 'slf4j-nop', version: slf4jVersion
+  implementation project(':trainbenchmark-generator')
+  implementation group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: tinkerGraphVersion
+  implementation group: 'org.slf4j', name: 'slf4j-nop', version: slf4jVersion
 }

@@ -41,7 +41,7 @@ public class Neo4JApiQuerySemaphoreNeighborInject extends Neo4jApiQuery<Neo4jSem
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (Transaction tx = graphDb.beginTx()) {
 			// (route:Route)
-			final Iterable<Node> routes = () -> graphDb.findNodes(Neo4jConstants.labelRoute);
+			final Iterable<Node> routes = () -> tx.findNodes(Neo4jConstants.labelRoute);
 			for (final Node route : routes) {
 				Iterable<Relationship> entries = route.getRelationships(Direction.OUTGOING, Neo4jConstants.relationshipTypeEntry);
 
@@ -49,8 +49,8 @@ public class Neo4JApiQuerySemaphoreNeighborInject extends Neo4jApiQuery<Neo4jSem
 					final Node semaphore = entry.getEndNode();
 
 					final Map<String, Object> match = new HashMap<>();
-					match.put(QueryConstants.VAR_ROUTE, route);
-					match.put(QueryConstants.VAR_SEMAPHORE, semaphore);
+					match.put(QueryConstants.VAR_ROUTE, route.getElementId());
+					match.put(QueryConstants.VAR_SEMAPHORE, semaphore.getElementId());
 					matches.add(new Neo4jSemaphoreNeighborInjectMatch(match));
 				}
 			}

@@ -11,14 +11,16 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.api.inject;
 
-import java.util.Collection;
-
-import org.neo4j.graphdb.Relationship;
-
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.driver.Neo4jDriver;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jRouteSensorInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransformation;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ResourceIterable;
+import org.neo4j.graphdb.Transaction;
+
+import java.util.Collection;
 
 public class Neo4jApiTransformationInjectRouteSensor extends Neo4jApiTransformation<Neo4jRouteSensorInjectMatch> {
 
@@ -28,11 +30,15 @@ public class Neo4jApiTransformationInjectRouteSensor extends Neo4jApiTransformat
 
 	@Override
 	public void activate(final Collection<Neo4jRouteSensorInjectMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jRouteSensorInjectMatch match : matches) {
-			final Iterable<Relationship> requiress = match.getRoute().getRelationships(Neo4jConstants.relationshipTypeRequires);
-			for (final Relationship requires : requiress) {
-				if (requires.getEndNode().equals(match.getSensor())) {
-					requires.delete();
+			Node route = tx.getNodeByElementId(match.getRoute());
+			Node sensor = tx.getNodeByElementId(match.getSensor());
+			try (final ResourceIterable<Relationship> requiress = route.getRelationships(Neo4jConstants.relationshipTypeRequires)) {
+				for (final Relationship requires : requiress) {
+					if (requires.getEndNode().equals(sensor)) {
+						requires.delete();
+					}
 				}
 			}
 		}

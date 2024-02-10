@@ -18,11 +18,14 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEMAPHORE;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SW;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SWP;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.query.BindingSet;
+
+import org.eclipse.rdf4j.model.Value;
+
 
 import hu.bme.mit.trainbenchmark.benchmark.matches.SwitchSetMatch;
+
 
 public class SesameSwitchSetMatch extends SesameMatch implements SwitchSetMatch {
 
@@ -31,23 +34,23 @@ public class SesameSwitchSetMatch extends SesameMatch implements SwitchSetMatch 
 	}
 
 	@Override
-	public URI getSemaphore() {
-		return (URI) bs.getValue(VAR_SEMAPHORE);
+	public IRI getSemaphore() {
+		return (IRI) bs.getValue(VAR_SEMAPHORE);
 	}
 
 	@Override
-	public URI getRoute() {
-		return (URI) bs.getValue(VAR_ROUTE);
+	public IRI getRoute() {
+		return (IRI) bs.getValue(VAR_ROUTE);
 	}
 
 	@Override
-	public URI getSwP() {
-		return (URI) bs.getValue(VAR_SWP);
+	public IRI getSwP() {
+		return (IRI) bs.getValue(VAR_SWP);
 	}
 
 	@Override
-	public URI getSw() {
-		return (URI) bs.getValue(VAR_SW);
+	public IRI getSw() {
+		return (IRI) bs.getValue(VAR_SW);
 	}
 
 	public Value getPosition() {

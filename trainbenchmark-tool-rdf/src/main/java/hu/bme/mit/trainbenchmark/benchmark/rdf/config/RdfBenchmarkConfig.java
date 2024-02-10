@@ -39,7 +39,7 @@ public abstract class RdfBenchmarkConfig extends BenchmarkConfig {
 	protected String getToolNamePostfix() {
 		return " (" +
 			(isInferencing() ? "Inferencing" : "No Inferencing") +
-			", " +
+			"-" +
 			format.getExtension() +
 			")";
 	}

@@ -12,6 +12,7 @@
 package hu.bme.mit.trainbenchmark.benchmark.operations;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import hu.bme.mit.trainbenchmark.benchmark.driver.Driver;
 

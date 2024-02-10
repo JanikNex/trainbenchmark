@@ -1,4 +1,4 @@
 dependencies {
-  compile project(':trainbenchmark-tool')
-  compile project(':trainbenchmark-format-emf')
+  api project(':trainbenchmark-tool')
+  api project(':trainbenchmark-format-emf')
 }

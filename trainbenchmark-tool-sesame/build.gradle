@@ -1,18 +1,18 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.sesame.SesameBenchmarkMain' }
 	mergeServiceFiles()
 }
 
 dependencies {
-	compile project(':trainbenchmark-tool-rdf')
-	compile group: 'org.openrdf.sesame', name: 'sesame-model', version: sesameVersion
-	compile group: 'org.openrdf.sesame', name: 'sesame-repository-sail', version: sesameVersion
-	compile group: 'org.openrdf.sesame', name: 'sesame-runtime', version: sesameVersion
-	compile group: 'org.openrdf.sesame', name: 'sesame-sail-memory', version: sesameVersion
-	compile group: 'org.openrdf.sesame', name: 'sesame-repository-contextaware', version: sesameVersion
-	compile group: 'org.openrdf.sesame', name: 'sesame-rio-rdfxml', version: sesameVersion
-	compile group: 'org.openrdf.sesame', name: 'sesame-rio-turtle', version: sesameVersion
+	api project(':trainbenchmark-tool-rdf')
+	api group: 'org.eclipse.rdf4j', name: 'rdf4j-model', version: sesameVersion
+	api group: 'org.eclipse.rdf4j', name: 'rdf4j-repository-sail', version: sesameVersion
+	api group: 'org.eclipse.rdf4j', name: 'rdf4j-runtime', version: sesameVersion
+	api group: 'org.eclipse.rdf4j', name: 'rdf4j-sail-memory', version: sesameVersion
+	api group: 'org.eclipse.rdf4j', name: 'rdf4j-repository-contextaware', version: sesameVersion
+	api group: 'org.eclipse.rdf4j', name: 'rdf4j-rio-rdfxml', version: sesameVersion
+	api group: 'org.eclipse.rdf4j', name: 'rdf4j-rio-turtle', version: sesameVersion
 }

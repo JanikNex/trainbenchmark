@@ -1,13 +1,17 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
+
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
+	zip64 true
 	mergeServiceFiles()
+	transform(Log4j2PluginsCacheFileTransformer)
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.generator.graph.neo4j.Neo4jGraphGeneratorMain' }
 }
 
 dependencies {
-	compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
-	compile project(':trainbenchmark-generator')
-	compile project(':trainbenchmark-format-graph-neo4j')
+	api group: 'commons-io', name: 'commons-io', version: commonsIoVersion
+	api project(':trainbenchmark-generator')
+	api project(':trainbenchmark-format-graph-neo4j')
 }

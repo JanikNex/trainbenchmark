@@ -45,7 +45,7 @@ public class Neo4JApiQuerySwitchSet extends Neo4jApiQuery<Neo4jSwitchSetMatch> {
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (final Transaction tx = graphDb.beginTx()) {
 			// (route:Route)
-			final Iterable<Node> routes = () -> graphDb.findNodes(Neo4jConstants.labelRoute);
+			final Iterable<Node> routes = () -> tx.findNodes(Neo4jConstants.labelRoute);
 			for (final Node route : routes) {
 				final boolean active = (boolean) route.getProperty(ModelConstants.ACTIVE);
 				if (!active) {
@@ -77,10 +77,10 @@ public class Neo4JApiQuerySwitchSet extends Neo4jApiQuery<Neo4jSwitchSetMatch> {
 
 							if (!currentPosition.equals(position)) {
 								final Map<String, Object> match = new HashMap<>();
-								match.put(QueryConstants.VAR_SEMAPHORE, semaphore);
-								match.put(QueryConstants.VAR_ROUTE, route);
-								match.put(QueryConstants.VAR_SWP, swP);
-								match.put(QueryConstants.VAR_SW, sw);
+								match.put(QueryConstants.VAR_SEMAPHORE, semaphore.getElementId());
+								match.put(QueryConstants.VAR_ROUTE, route.getElementId());
+								match.put(QueryConstants.VAR_SWP, swP.getElementId());
+								match.put(QueryConstants.VAR_SW, sw.getElementId());
 								match.put(QueryConstants.VAR_CURRENTPOSITION, currentPosition);
 								match.put(QueryConstants.VAR_POSITION, position);
 								matches.add(new Neo4jSwitchSetMatch(match));

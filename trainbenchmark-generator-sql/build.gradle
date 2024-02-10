@@ -1,11 +1,11 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.generator.sql.SqlGeneratorMain' }
 }
 
 dependencies {
-  compile project(':trainbenchmark-generator')
-  compile project(':trainbenchmark-format-sql')
+  implementation project(':trainbenchmark-generator')
+  implementation project(':trainbenchmark-format-sql')
 }

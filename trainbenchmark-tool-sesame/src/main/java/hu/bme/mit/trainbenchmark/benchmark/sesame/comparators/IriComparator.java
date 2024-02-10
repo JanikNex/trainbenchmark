@@ -13,12 +13,12 @@ package hu.bme.mit.trainbenchmark.benchmark.sesame.comparators;
 
 import java.util.Comparator;
 
-import org.openrdf.model.URI;
+import org.eclipse.rdf4j.model.IRI;
 
-public class UriComparator implements Comparator<URI> {
+public class IriComparator implements Comparator<IRI> {
 
 	@Override
-	public int compare(final URI uri1, final URI uri2) {
+	public int compare(final IRI uri1, final IRI uri2) {
 		final long id1 = Long.parseLong(uri1.getLocalName().substring(1));
 		final long id2 = Long.parseLong(uri2.getLocalName().substring(1));
 		return Long.compare(id1, id2);

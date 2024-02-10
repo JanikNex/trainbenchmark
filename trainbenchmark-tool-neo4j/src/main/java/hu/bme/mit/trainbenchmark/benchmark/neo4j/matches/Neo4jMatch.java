@@ -31,40 +31,24 @@ public abstract class Neo4jMatch extends BaseMatch {
 	}
 
 	public static Neo4jMatch createMatch(final RailwayQuery query, final Map<String, Object> match) {
-		switch (query) {
-		case ACTIVEROUTE:
-			return new Neo4jActiveRouteMatch(match);
-		case CONNECTEDSEGMENTS:
-			return new Neo4jConnectedSegmentsMatch(match);
-		case CONNECTEDSEGMENTS_INJECT:
-			return new Neo4jConnectedSegmentsInjectMatch(match);
-		case POSLENGTH:
-			return new Neo4jPosLengthMatch(match);
-		case POSLENGTH_INJECT:
-			return new Neo4jPosLengthInjectMatch(match);
-		case ROUTELENGTH:
-			return new Neo4jRouteLengthMatch(match);
-		case ROUTEREACHABILITY:
-			return new Neo4jRouteReachabilityMatch(match);
-		case ROUTESENSOR:
-			return new Neo4jRouteSensorMatch(match);
-		case ROUTESENSOR_INJECT:
-			return new Neo4jRouteSensorInjectMatch(match);
-		case SEMAPHORENEIGHBOR:
-			return new Neo4jSemaphoreNeighborMatch(match);
-		case SEMAPHORENEIGHBOR_INJECT:
-			return new Neo4jSemaphoreNeighborInjectMatch(match);
-		case SWITCHMONITORED:
-			return new Neo4jSwitchMonitoredMatch(match);
-		case SWITCHMONITORED_INJECT:
-			return new Neo4jSwitchMonitoredInjectMatch(match);
-		case SWITCHSET:
-			return new Neo4jSwitchSetMatch(match);
-		case SWITCHSET_INJECT:
-			return new Neo4jSwitchSetInjectMatch(match);
-		default:
-			throw new UnsupportedOperationException("Query not supported: " + query);
-		}
+        return switch (query) {
+            case ACTIVEROUTE -> new Neo4jActiveRouteMatch(match);
+            case CONNECTEDSEGMENTS -> new Neo4jConnectedSegmentsMatch(match);
+            case CONNECTEDSEGMENTS_INJECT -> new Neo4jConnectedSegmentsInjectMatch(match);
+            case POSLENGTH -> new Neo4jPosLengthMatch(match);
+            case POSLENGTH_INJECT -> new Neo4jPosLengthInjectMatch(match);
+            case ROUTELENGTH -> new Neo4jRouteLengthMatch(match);
+            case ROUTEREACHABILITY -> new Neo4jRouteReachabilityMatch(match);
+            case ROUTESENSOR -> new Neo4jRouteSensorMatch(match);
+            case ROUTESENSOR_INJECT -> new Neo4jRouteSensorInjectMatch(match);
+            case SEMAPHORENEIGHBOR -> new Neo4jSemaphoreNeighborMatch(match);
+            case SEMAPHORENEIGHBOR_INJECT -> new Neo4jSemaphoreNeighborInjectMatch(match);
+            case SWITCHMONITORED -> new Neo4jSwitchMonitoredMatch(match);
+            case SWITCHMONITORED_INJECT -> new Neo4jSwitchMonitoredInjectMatch(match);
+            case SWITCHSET -> new Neo4jSwitchSetMatch(match);
+            case SWITCHSET_INJECT -> new Neo4jSwitchSetInjectMatch(match);
+            default -> throw new UnsupportedOperationException("Query not supported: " + query);
+        };
 	}
 
 }

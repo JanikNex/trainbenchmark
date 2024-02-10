@@ -1,15 +1,16 @@
-buildscript {
-  dependencies {
-    classpath group: 'org.akhikhl.gretty', name: 'gretty', version: '1.4.1'
-  }
-  repositories {
-    jcenter()
-  }
+plugins {
+  id 'org.gretty' version '4.1.2'
 }
 
-apply plugin: 'org.akhikhl.gretty'
+repositories {
+  mavenCentral()
+}
 
-task page() {
+dependencies {
+  gretty 'org.gretty:gretty:+'
+}
+
+tasks.register('page') {
   doLast {
     copy {
       from '../trainbenchmark-reporting'
@@ -23,8 +24,14 @@ task page() {
       include '*.pdf'
     }
 
-    appRun.contextPath = ''
-		appRun.inplaceMode = 'hard'
-    appRun.execute()
+    gretty {
+      contextPath = ''
+      inplaceMode = 'hard'
+      host = '0.0.0.0'
+    }
   }
+}
+
+project.afterEvaluate {
+  tasks.page.finalizedBy(appRun)
 }

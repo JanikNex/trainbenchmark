@@ -11,6 +11,8 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.driver;
 
+import java.util.Optional;
+
 /**
  * Superclass for the drivers used in the benchmark.
  *

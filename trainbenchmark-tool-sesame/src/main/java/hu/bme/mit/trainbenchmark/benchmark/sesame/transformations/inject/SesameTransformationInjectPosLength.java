@@ -15,13 +15,13 @@ import static hu.bme.mit.trainbenchmark.rdf.RdfConstants.BASE_PREFIX;
 
 import java.util.Collection;
 
-import org.openrdf.model.Literal;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.RepositoryResult;
+import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Statement;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.repository.RepositoryConnection;
+import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import hu.bme.mit.trainbenchmark.benchmark.sesame.driver.SesameDriver;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesamePosLengthInjectMatch;
@@ -39,11 +39,11 @@ public class SesameTransformationInjectPosLength<TSesameDriver extends SesameDri
 		final RepositoryConnection con = driver.getConnection();
 		final ValueFactory vf = driver.getValueFactory();
 
-		final URI typeURI = vf.createURI(BASE_PREFIX + ModelConstants.LENGTH);
+		final IRI typeURI = vf.createIRI(BASE_PREFIX + ModelConstants.LENGTH);
 		final Literal zeroLiteral = vf.createLiteral(0);
 
 		for (final SesamePosLengthInjectMatch match : matches) {
-			final URI segment = match.getSegment();
+			final IRI segment = match.getSegment();
 
 			final RepositoryResult<Statement> statementsToRemove = con.getStatements(segment, typeURI, null, true);
 			con.remove(statementsToRemove);

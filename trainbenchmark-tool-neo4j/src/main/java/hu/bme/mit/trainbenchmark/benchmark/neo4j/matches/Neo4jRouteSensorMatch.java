@@ -25,23 +25,23 @@ public class Neo4jRouteSensorMatch extends Neo4jMatch implements RouteSensorMatc
 	}
 
 	@Override
-	public Node getRoute() {
-		return (Node) match.get(QueryConstants.VAR_ROUTE);
+	public String getRoute() {
+		return (String) match.get(QueryConstants.VAR_ROUTE);
 	}
 
 	@Override
-	public Node getSensor() {
-		return (Node) match.get(QueryConstants.VAR_SENSOR);
+	public String getSensor() {
+		return (String) match.get(QueryConstants.VAR_SENSOR);
 	}
 
 	@Override
-	public Node getSwP() {
-		return (Node) match.get(QueryConstants.VAR_SWP);
+	public String getSwP() {
+		return (String) match.get(QueryConstants.VAR_SWP);
 	}
 
 	@Override
-	public Node getSw() {
-		return (Node) match.get(QueryConstants.VAR_SW);
+	public String getSw() {
+		return (String) match.get(QueryConstants.VAR_SW);
 	}
 
 }

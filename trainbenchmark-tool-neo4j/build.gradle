@@ -1,12 +1,13 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	mergeServiceFiles()
+	zip64 true
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.neo4j.Neo4jBenchmarkMain' }
 }
 
 dependencies {
-	compile project(':trainbenchmark-tool')
-	compile project(':trainbenchmark-format-graph-neo4j')
+	api project(':trainbenchmark-tool')
+	api project(':trainbenchmark-format-graph-neo4j')
 }

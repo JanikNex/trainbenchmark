@@ -11,15 +11,15 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.api.inject;
 
-import java.util.Collection;
-
-import org.neo4j.graphdb.Node;
-
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.driver.Neo4jDriver;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jSwitchSetInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransformation;
 import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.Position;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
+
+import java.util.Collection;
 
 public class Neo4jApiTransformationInjectSwitchSet extends Neo4jApiTransformation<Neo4jSwitchSetInjectMatch> {
 
@@ -29,8 +29,9 @@ public class Neo4jApiTransformationInjectSwitchSet extends Neo4jApiTransformatio
 
 	@Override
 	public void activate(final Collection<Neo4jSwitchSetInjectMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jSwitchSetInjectMatch match : matches) {
-			final Node sw = match.getSw();
+			final Node sw = tx.getNodeByElementId(match.getSw());
 			final String currentPositionString = (String) sw.getProperty(ModelConstants.CURRENTPOSITION);
 			final Position currentPosition = Position.valueOf(currentPositionString);
 			final Position newCurrentPosition = Position.values()[(currentPosition.ordinal() + 1) % Position.values().length];

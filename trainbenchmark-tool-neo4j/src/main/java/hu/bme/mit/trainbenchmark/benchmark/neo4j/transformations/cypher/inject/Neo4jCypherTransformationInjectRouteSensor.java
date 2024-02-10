@@ -17,6 +17,8 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jRouteSensorInjectM
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jCypherTransformation;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -30,12 +32,15 @@ public class Neo4jCypherTransformationInjectRouteSensor extends Neo4jCypherTrans
 
 	@Override
 	public void activate(final Collection<Neo4jRouteSensorInjectMatch> matches) throws IOException {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jRouteSensorInjectMatch match : matches) {
+			Node route = tx.getNodeByElementId(match.getRoute());
+			Node sensor = tx.getNodeByElementId(match.getSensor());
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_ROUTE, match.getRoute(), //
-					QueryConstants.VAR_SENSOR, match.getSensor() //
+				QueryConstants.VAR_ROUTE, route, //
+				QueryConstants.VAR_SENSOR, sensor //
 			);
-			driver.runTransformation(transformationDefinition, parameters);
+			driver.runTransformation(tx, transformationDefinition, parameters);
 		}
 	}
 

@@ -16,6 +16,7 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jRouteSensorMatch;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransformation;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
 import java.util.Collection;
 
@@ -27,9 +28,10 @@ public class Neo4jApiTransformationRepairRouteSensor extends Neo4jApiTransformat
 
 	@Override
 	public void activate(final Collection<Neo4jRouteSensorMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jRouteSensorMatch match : matches) {
-			final Node route = match.getRoute();
-			final Node sensor = match.getSensor();
+			final Node route = tx.getNodeByElementId(match.getRoute());
+			final Node sensor = tx.getNodeByElementId(match.getSensor());
 			route.createRelationshipTo(sensor, Neo4jConstants.relationshipTypeRequires);
 		}
 	}

@@ -41,10 +41,10 @@ public class Neo4JApiQueryPosLengthInject extends Neo4jApiQuery<Neo4jPosLengthIn
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (Transaction tx = graphDb.beginTx()) {
 			// (segment:Segment)
-			final Iterable<Node> segments = () -> graphDb.findNodes(Neo4jConstants.labelSegment);
+			final Iterable<Node> segments = () -> tx.findNodes(Neo4jConstants.labelSegment);
 			for (final Node segment : segments) {
 				final Map<String, Object> match = new HashMap<>();
-				match.put(VAR_SEGMENT, segment);
+				match.put(VAR_SEGMENT, segment.getElementId());
 				matches.add(new Neo4jPosLengthInjectMatch(match));
 			}
 		}

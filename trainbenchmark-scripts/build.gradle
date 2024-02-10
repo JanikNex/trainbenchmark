@@ -1,21 +1,21 @@
 apply plugin: 'groovy'
 
 dependencies {
-	compile localGroovy()
-	compile project(':trainbenchmark-generator')
-	compile project(':trainbenchmark-generator-emf')
-	compile project(':trainbenchmark-generator-graph-neo4j')
-	compile project(':trainbenchmark-generator-graph-tinkerpop')
-	compile project(':trainbenchmark-generator-rdf')
-	compile project(':trainbenchmark-generator-sql')
-	compile project(':trainbenchmark-tool')
-	compile project(':trainbenchmark-tool-emfapi')
-	compile project(':trainbenchmark-tool-jena')
-	compile project(':trainbenchmark-tool-mysql')
-	compile project(':trainbenchmark-tool-neo4j')
-	compile project(':trainbenchmark-tool-sqlite')
-	compile project(':trainbenchmark-tool-tinkergraph')
-	compile project(':trainbenchmark-tool-viatra')
+	implementation group: 'org.apache.groovy', name: 'groovy', version: groovyVersion
+	implementation project(':trainbenchmark-generator')
+	implementation project(':trainbenchmark-generator-emf')
+	implementation project(':trainbenchmark-generator-graph-neo4j')
+	implementation project(':trainbenchmark-generator-graph-tinkerpop')
+	implementation project(':trainbenchmark-generator-rdf')
+	implementation project(':trainbenchmark-generator-sql')
+	implementation project(':trainbenchmark-tool')
+	implementation project(':trainbenchmark-tool-emfapi')
+	implementation project(':trainbenchmark-tool-jena')
+	implementation project(':trainbenchmark-tool-mysql')
+	implementation project(':trainbenchmark-tool-neo4j')
+	implementation project(':trainbenchmark-tool-sqlite')
+	implementation project(':trainbenchmark-tool-tinkergraph')
+	implementation project(':trainbenchmark-tool-viatra')
 }
 
 sourceSets {
@@ -28,7 +28,7 @@ sourceSets {
  * Initialize the generator, benchmark, etc. scripts in src directory,
  * based on the template script in the src-template directory.
  */
-task initScripts(type: Copy) {
+tasks.register('initScripts', Copy) {
 	from 'src-template'
 	into 'src'
 	include '*.groovy'
@@ -38,13 +38,13 @@ task initScripts(type: Copy) {
  * Save the current scripts from the src directory to the src-template directory.
  * Use with caution and double check the diffs before committing the changes.
  */
-task saveScripts(type: Copy) {
+tasks.register('saveScripts', Copy) {
 	from 'src'
 	into 'src-template'
 	include '*.groovy'
 }
 
-task cleanResults(type: Delete) {
+tasks.register('cleanResults', Delete) {
 	doFirst {
 		def resultDir = "../results"
 		file(resultDir).eachDir { dir ->
@@ -53,18 +53,21 @@ task cleanResults(type: Delete) {
 	}
 }
 
-task benchmark(dependsOn: 'classes', type: JavaExec) {
-	main = 'BenchmarkScript'
+tasks.register('benchmark', JavaExec) {
+	dependsOn 'classes'
+	mainClass = 'BenchmarkScript'
 	classpath = sourceSets.main.runtimeClasspath
 }
 
-task generate(dependsOn: 'classes', type: JavaExec) {
-	main = 'GeneratorScript'
+tasks.register('generate', JavaExec) {
+	dependsOn 'classes'
+	mainClass = 'GeneratorScript'
 	classpath = sourceSets.main.runtimeClasspath
 }
 
-task individualBenchmark(dependsOn: 'classes', type: JavaExec) {
-	main = 'IndividualBenchmarkScript'
+tasks.register('individualBenchmark', JavaExec) {
+	dependsOn 'classes'
+	mainClass = 'IndividualBenchmarkScript'
 	classpath = sourceSets.main.runtimeClasspath
 }
 

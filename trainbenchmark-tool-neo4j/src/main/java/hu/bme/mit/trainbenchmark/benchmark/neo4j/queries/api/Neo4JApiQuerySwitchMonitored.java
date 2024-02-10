@@ -19,11 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
 
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.driver.Neo4jDriver;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jSwitchMonitoredMatch;
@@ -42,24 +38,25 @@ public class Neo4JApiQuerySwitchMonitored extends Neo4jApiQuery<Neo4jSwitchMonit
 
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (Transaction tx = graphDb.beginTx()) {
-			final Iterable<Node> sws = () -> graphDb.findNodes(Neo4jConstants.labelSwitch);
+			final Iterable<Node> sws = () -> tx.findNodes(Neo4jConstants.labelSwitch);
 			// (sw:Switch)
 			for (final Node sw : sws) {
 				// (sw)-[:sensor]->(Sensor) NAC
-				final Iterable<Relationship> relationshipSensors = sw.getRelationships(Direction.OUTGOING, Neo4jConstants.relationshipTypeMonitoredBy);
 
 				boolean hasSensor = false;
-				for (final Relationship relationshipSensor : relationshipSensors) {
-					final Node sensor = relationshipSensor.getEndNode();
-					if (sensor.hasLabel(Neo4jConstants.labelSensor)) {
-						hasSensor = true;
-						break;
+				try(final ResourceIterable<Relationship> relationshipSensors = sw.getRelationships(Direction.OUTGOING, Neo4jConstants.relationshipTypeMonitoredBy)) {
+					for (final Relationship relationshipSensor : relationshipSensors) {
+						final Node sensor = relationshipSensor.getEndNode();
+						if (sensor.hasLabel(Neo4jConstants.labelSensor)) {
+							hasSensor = true;
+							break;
+						}
 					}
 				}
 
 				if (!hasSensor) {
 					final Map<String, Object> match = new HashMap<>();
-					match.put(VAR_SW, sw);
+					match.put(VAR_SW, sw.getElementId());
 					matches.add(new Neo4jSwitchMonitoredMatch(match));
 				}
 			}

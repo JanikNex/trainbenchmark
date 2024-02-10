@@ -11,11 +11,10 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.jena.matches;
 
-import org.apache.jena.ext.com.google.common.base.Joiner;
-import org.apache.jena.query.QuerySolution;
-
+import com.google.common.base.Joiner;
 import hu.bme.mit.trainbenchmark.benchmark.matches.BaseMatch;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
+import org.apache.jena.query.QuerySolution;
 
 public abstract class JenaMatch extends BaseMatch {
 
@@ -27,32 +26,32 @@ public abstract class JenaMatch extends BaseMatch {
 
 	public static JenaMatch createMatch(final RailwayQuery query, final QuerySolution qs) {
 		switch (query) {
-		case CONNECTEDSEGMENTS:
-			return new JenaConnectedSegmentsMatch(qs);
-		case CONNECTEDSEGMENTS_INJECT:
-			return new JenaConnectedSegmentsInjectMatch(qs);
-		case POSLENGTH:
-			return new JenaPosLengthMatch(qs);
-		case POSLENGTH_INJECT:
-			return new JenaPosLengthInjectMatch(qs);
-		case ROUTESENSOR:
-			return new JenaRouteSensorMatch(qs);
-		case ROUTESENSOR_INJECT:
-			return new JenaRouteSensorInjectMatch(qs);
-		case SEMAPHORENEIGHBOR:
-			return new JenaSemaphoreNeighborMatch(qs);
-		case SEMAPHORENEIGHBOR_INJECT:
-			return new JenaSemaphoreNeighborInjectMatch(qs);
-		case SWITCHMONITORED:
-			return new JenaSwitchMonitoredMatch(qs);
-		case SWITCHMONITORED_INJECT:
-			return new JenaSwitchMonitoredInjectMatch(qs);
-		case SWITCHSET:
-			return new JenaSwitchSetMatch(qs);
-		case SWITCHSET_INJECT:
-			return new JenaSwitchSetInjectMatch(qs);
-		default:
-			throw new UnsupportedOperationException("Pattern not supported: " + query);
+			case CONNECTEDSEGMENTS:
+				return new JenaConnectedSegmentsMatch(qs);
+			case CONNECTEDSEGMENTS_INJECT:
+				return new JenaConnectedSegmentsInjectMatch(qs);
+			case POSLENGTH:
+				return new JenaPosLengthMatch(qs);
+			case POSLENGTH_INJECT:
+				return new JenaPosLengthInjectMatch(qs);
+			case ROUTESENSOR:
+				return new JenaRouteSensorMatch(qs);
+			case ROUTESENSOR_INJECT:
+				return new JenaRouteSensorInjectMatch(qs);
+			case SEMAPHORENEIGHBOR:
+				return new JenaSemaphoreNeighborMatch(qs);
+			case SEMAPHORENEIGHBOR_INJECT:
+				return new JenaSemaphoreNeighborInjectMatch(qs);
+			case SWITCHMONITORED:
+				return new JenaSwitchMonitoredMatch(qs);
+			case SWITCHMONITORED_INJECT:
+				return new JenaSwitchMonitoredInjectMatch(qs);
+			case SWITCHSET:
+				return new JenaSwitchSetMatch(qs);
+			case SWITCHSET_INJECT:
+				return new JenaSwitchSetInjectMatch(qs);
+			default:
+				throw new UnsupportedOperationException("Pattern not supported: " + query);
 		}
 	}
 
@@ -61,5 +60,5 @@ public abstract class JenaMatch extends BaseMatch {
 		final Joiner joiner = Joiner.on(", ");
 		return joiner.join(toArray());
 	}
-	
+
 }

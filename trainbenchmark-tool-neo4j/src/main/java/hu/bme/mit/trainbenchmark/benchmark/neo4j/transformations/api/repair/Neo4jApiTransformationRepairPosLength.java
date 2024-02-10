@@ -18,6 +18,7 @@ import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jHelper;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.graphdb.Transaction;
 
 import java.util.Collection;
 
@@ -29,8 +30,9 @@ public class Neo4jApiTransformationRepairPosLength extends Neo4jApiTransformatio
 
 	@Override
 	public void activate(final Collection<Neo4jPosLengthMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jPosLengthMatch match : matches) {
-			final Node segment = match.getSegment();
+			final Node segment = tx.getNodeByElementId(match.getSegment());
 			try {
 				final Number lengthNumber = (Number) segment.getProperty(ModelConstants.LENGTH);
 				final int length = Neo4jHelper.numberToInt(lengthNumber);

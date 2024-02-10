@@ -1,11 +1,11 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.generator.cypher.CypherGeneratorMain' }
 }
 
 dependencies {
-  compile project(':trainbenchmark-generator')
+  implementation project(':trainbenchmark-generator')
   //compile project(':trainbenchmark-format-graph-neo4j')
 }

@@ -32,38 +32,38 @@ public class Neo4jSemaphoreNeighborMatch extends Neo4jMatch implements Semaphore
 	}
 
 	@Override
-	public Node getSemaphore() {
-		return (Node) match.get(VAR_SEMAPHORE);
+	public String getSemaphore() {
+		return (String) match.get(VAR_SEMAPHORE);
 	}
 
 	@Override
-	public Node getRoute1() {
-		return (Node) match.get(VAR_ROUTE1);
+	public String getRoute1() {
+		return (String) match.get(VAR_ROUTE1);
 	}
 
 	@Override
-	public Node getRoute2() {
-		return (Node) match.get(VAR_ROUTE2);
+	public String getRoute2() {
+		return (String) match.get(VAR_ROUTE2);
 	}
 
 	@Override
-	public Node getSensor1() {
-		return (Node) match.get(VAR_SENSOR1);
+	public String getSensor1() {
+		return (String) match.get(VAR_SENSOR1);
 	}
 
 	@Override
-	public Node getSensor2() {
-		return (Node) match.get(VAR_SENSOR2);
+	public String getSensor2() {
+		return (String) match.get(VAR_SENSOR2);
 	}
 
 	@Override
-	public Node getTe1() {
-		return (Node) match.get(VAR_TE1);
+	public String getTe1() {
+		return (String) match.get(VAR_TE1);
 	}
 
 	@Override
-	public Node getTe2() {
-		return (Node) match.get(VAR_TE2);
+	public String getTe2() {
+		return (String) match.get(VAR_TE2);
 	}
 
 }

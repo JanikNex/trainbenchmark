@@ -15,9 +15,9 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_CURRENTPOSI
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_POSITION;
 import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SW;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Value;
+import org.eclipse.rdf4j.query.BindingSet;
 
 import hu.bme.mit.trainbenchmark.benchmark.matches.SwitchSetInjectMatch;
 
@@ -28,8 +28,8 @@ public class SesameSwitchSetInjectMatch extends SesameMatch implements SwitchSet
 	}
 
 	@Override
-	public URI getSw() {
-		return (URI) bs.getValue(VAR_SW);
+	public IRI getSw() {
+		return (IRI) bs.getValue(VAR_SW);
 	}
 
 	public Value getPosition() {

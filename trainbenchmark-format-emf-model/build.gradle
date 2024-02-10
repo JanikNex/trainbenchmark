@@ -1,46 +1,69 @@
 plugins {
-    id "org.xtext.builder" version "3.0.2"
+    id "org.xtext.builder" version "4.0.0"
 }
 
 apply plugin: 'org.xtext.xtend'
 apply from: "${rootDir}/gradle/source-layout-xcore.gradle"
 
 dependencies {
-	compile "org.eclipse.xtext:org.eclipse.xtext.xbase:${xtextVersion}"
-	compile 'org.eclipse.emf:org.eclipse.emf.ecore.xcore.lib:+'
-	testCompile group: 'junit', name: 'junit', version: junitVersion
+    api "org.eclipse.xtext:org.eclipse.xtext.xbase:${xtextVersion}"
+    api 'org.eclipse.emf:org.eclipse.emf.ecore.xcore.lib:+'
+    testImplementation group: 'junit', name: 'junit', version: junitVersion
 
-	xtextLanguages 'org.eclipse.emf:org.eclipse.emf.ecore.xcore:+'
-	xtextLanguages 'org.eclipse.emf:org.eclipse.emf.ecore.xcore.lib:+'
-	xtextLanguages 'org.eclipse.emf:org.eclipse.emf.codegen.ecore:+'
-	xtextLanguages 'org.eclipse.emf:org.eclipse.emf.codegen.ecore.xtext:+'
-	xtextLanguages "org.eclipse.xtext:org.eclipse.xtext.ecore:${xtextVersion}"
+    xtextLanguages 'org.eclipse.emf:org.eclipse.emf.ecore.xcore:+'
+    xtextLanguages 'org.eclipse.emf:org.eclipse.emf.ecore.xcore.lib:+'
+    xtextLanguages 'org.eclipse.emf:org.eclipse.emf.codegen.ecore:+'
+    xtextLanguages 'org.eclipse.emf:org.eclipse.emf.codegen.ecore.xtext:+'
+    xtextLanguages "org.eclipse.xtext:org.eclipse.xtext.ecore:${xtextVersion}"
 }
+
+//tasks.named('processResources') {
+//    // Existing configuration for processResources task
+//    dependsOn project(":trainbenchmark-format-emf-model").tasks.named('generateXtext')
+//}
+//
+//tasks.named('packageSources') {
+//    // Existing configuration for processResources task
+//    dependsOn project(":trainbenchmark-format-emf-model").tasks.named('generateXtext')
+//}
 
 sourceSets {
-	main {
-		resources {
-			exclude '**/*.xcore'
-		}
-	}
+    main {
+        resources {
+            exclude '**/*.xcore'
+        }
+//        java {
+//            srcDir layout.buildDirectory.get().dir("xcore/main")
+//        }
+    }
 }
 
-configurations.all {
-	resolutionStrategy.force 'org.antlr:antlr-runtime:3.2'
+configurations.configureEach {
+    resolutionStrategy.force 'org.antlr:antlr-runtime:3.2'
 }
 
 xtext {
-	version = "${xtextVersion}"
-	languages {
-		ecore {
-			setup = 'org.eclipse.xtext.ecore.EcoreSupport'
-		}
-		codegen {
-			setup = 'org.eclipse.emf.codegen.ecore.xtext.GenModelSupport'
-		}
-		xcore {
-			setup = 'org.eclipse.emf.ecore.xcore.XcoreStandaloneSetup'
-			generator.outlet.producesJava = true
-		}
-	}
+    version = "${xtextVersion}"
+    languages {
+        ecore {
+            setup = 'org.eclipse.xtext.ecore.EcoreSupport'
+        }
+        codegen {
+            setup = 'org.eclipse.emf.codegen.ecore.xtext.GenModelSupport'
+        }
+        xcore {
+            setup = 'org.eclipse.emf.ecore.xcore.XcoreStandaloneSetup'
+            generator.outlet.producesJava = true
+        }
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDir 'build/xcore'
+            }
+        }
+    }
 }
+
+tasks.packageSources.dependsOn tasks.generateXtext

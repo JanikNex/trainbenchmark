@@ -28,6 +28,7 @@ def formats = [
 	new TinkerGraphGeneratorConfigBuilder().setGraphFormat(TinkerGraphFormat.GRAPHML),
 	new RdfGeneratorConfigBuilder().setFormat(RdfFormat.TURTLE).setInferred(true),
 	new RdfGeneratorConfigBuilder().setFormat(RdfFormat.TURTLE).setInferred(false),
+	new RdfGeneratorConfigBuilder().setFormat(RdfFormat.NTRIPLES).setInferred(false),
 	new SqlGeneratorConfigBuilder(),
 ]
 

@@ -4,12 +4,12 @@ allprojects  {
 }
 
 subprojects {
-	apply plugin: 'java'
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+	apply plugin: 'java-library'
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 
-	task packageSources(type: Jar) {
-		classifier = 'sources'
+	tasks.register('packageSources', Jar) {
+		archiveClassifier = 'sources'
 		from sourceSets.main.allSource
 	}
 
@@ -27,29 +27,31 @@ buildscript {
 		maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
-		classpath group: 'com.github.jengelman.gradle.plugins', name: 'shadow', version: '2.0.1'
+		classpath group: 'com.github.johnrengelman', name: 'shadow', version: '8.1.1'
 	}
 }
 
 ext {
-	commonsExecVersion = '1.3'
-	commonsIoVersion = '2.5'
-	commonsLangVersion = '2.4'
-	emfVersion = '2.10.0-v20140514-1158'
-	guavaVersion = '23.0'
+	commonsExecVersion = '1.4.0'
+	commonsIoVersion = '2.15.1'
+	commonsLangVersion = '3.14.0'
+	emfVersion = '2.35.0'
+	emfCommonVersion = '2.29.0'
+	guavaVersion = '33.0.0-jre'
+	groovyVersion = '4.0.9'
 	ingraphVersion = '0.1.0'
-	janusGraph = '0.2.0'
-	jenaVersion = '3.4.0'
-	junitVersion = '4.12'
-	kryoVersion = '4.0.1'
-	mySqlConnectorVersion = '5.1.44'
-	neo4jVersion = '3.3.5'
-	neo4jApocVersion = '3.3.0.3'
-	orientDbVersion = '3.0.0m2'
-	sesameVersion = '2.9.0'
-	slf4jVersion = '1.7.10'
-	sqliteVersion = '3.20.0'
-	tinkerGraphVersion = '3.2.5'
-	viatraVersion = '1.6.1'
-	xtextVersion = '2.26.0'
+	janusGraph = '1.0.0'
+	jenaVersion = '4.10.0'
+	junitVersion = '4.13.1'
+	kryoVersion = '4.0.3'
+	mySqlConnectorVersion = '8.3.0'
+	neo4jVersion = '5.16.0' //'3.5.35' // TODO: 5.16.0
+	neo4jApocVersion = '5.16.1' //'3.5.0.5' //TODO: 4.4.0.24
+	orientDbVersion = '3.2.27'
+	sesameVersion = '4.3.9'
+	slf4jVersion = '2.0.11'
+	sqliteVersion = '3.45.1.0'
+	tinkerGraphVersion = '3.7.1'
+	viatraVersion = '2.8.0'
+	xtextVersion = '2.33.0'
 }

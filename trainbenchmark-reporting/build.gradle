@@ -1,7 +1,7 @@
-task plot(type: Exec) {
+tasks.register('plot', Exec) {
   commandLine 'Rscript', 'report.R'
 }
 
-task plotIndividual(type: Exec) {
+tasks.register('plotIndividual', Exec) {
   commandLine 'Rscript', 'individual.R'
 }

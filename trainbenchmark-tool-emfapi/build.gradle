@@ -1,10 +1,10 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.emfapi.EmfApiBenchmarkMain' }
 }
 
 dependencies {
-	compile project(':trainbenchmark-tool-emf')
+	implementation project(':trainbenchmark-tool-emf')
 }

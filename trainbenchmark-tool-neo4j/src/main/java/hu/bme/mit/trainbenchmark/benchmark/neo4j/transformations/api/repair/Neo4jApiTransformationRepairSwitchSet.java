@@ -15,7 +15,7 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.driver.Neo4jDriver;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jSwitchSetMatch;
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransformation;
 import org.neo4j.graphdb.Node;
-import org.neo4j.kernel.api.exceptions.KernelException;
+import org.neo4j.graphdb.Transaction;
 
 import java.util.Collection;
 
@@ -28,9 +28,10 @@ public class Neo4jApiTransformationRepairSwitchSet extends Neo4jApiTransformatio
 	}
 
 	@Override
-	public void activate(final Collection<Neo4jSwitchSetMatch> matches) throws KernelException {
+	public void activate(final Collection<Neo4jSwitchSetMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jSwitchSetMatch match : matches) {
-			final Node sw = match.getSw();
+			final Node sw = tx.getNodeByElementId(match.getSw());
 			final String position = match.getPosition();
 			sw.setProperty(CURRENTPOSITION, position);
 		}

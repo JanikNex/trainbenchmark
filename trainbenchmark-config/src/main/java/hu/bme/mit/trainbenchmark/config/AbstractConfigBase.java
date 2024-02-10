@@ -13,7 +13,7 @@
 package hu.bme.mit.trainbenchmark.config;
 
 public abstract class AbstractConfigBase {
-	
+
 	public AbstractConfigBase() {
 	}
 

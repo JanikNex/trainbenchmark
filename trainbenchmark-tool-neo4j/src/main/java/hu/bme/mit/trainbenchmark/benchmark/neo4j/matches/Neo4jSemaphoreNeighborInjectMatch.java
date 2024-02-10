@@ -27,13 +27,13 @@ public class Neo4jSemaphoreNeighborInjectMatch extends Neo4jMatch implements Sem
 	}
 
 	@Override
-	public Node getRoute() {
-		return (Node) match.get(VAR_ROUTE);
+	public String getRoute() {
+		return (String) match.get(VAR_ROUTE);
 	}
 
 	@Override
-	public Node getSemaphore() {
-		return (Node) match.get(VAR_SEMAPHORE);
+	public String getSemaphore() {
+		return (String) match.get(VAR_SEMAPHORE);
 	}
 
 }

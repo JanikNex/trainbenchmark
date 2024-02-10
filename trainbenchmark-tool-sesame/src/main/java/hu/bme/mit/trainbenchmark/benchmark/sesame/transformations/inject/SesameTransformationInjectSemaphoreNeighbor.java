@@ -13,8 +13,8 @@ package hu.bme.mit.trainbenchmark.benchmark.sesame.transformations.inject;
 
 import java.util.Collection;
 
-import org.openrdf.model.URI;
-import org.openrdf.repository.RepositoryException;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.repository.RepositoryException;
 
 import hu.bme.mit.trainbenchmark.benchmark.sesame.driver.SesameDriver;
 import hu.bme.mit.trainbenchmark.benchmark.sesame.matches.SesameSemaphoreNeighborInjectMatch;
@@ -30,7 +30,7 @@ public class SesameTransformationInjectSemaphoreNeighbor<TSesameDriver extends S
 
 	@Override
 	public void activate(final Collection<SesameSemaphoreNeighborInjectMatch> matches) throws RepositoryException {
-		final URI entry = driver.getValueFactory().createURI(RdfConstants.BASE_PREFIX + ModelConstants.ENTRY);
+		final IRI entry = driver.getValueFactory().createIRI(RdfConstants.BASE_PREFIX + ModelConstants.ENTRY);
 
 		for (SesameSemaphoreNeighborInjectMatch match : matches) {
 			driver.getConnection().remove(match.getRoute(), entry, match.getSemaphore());

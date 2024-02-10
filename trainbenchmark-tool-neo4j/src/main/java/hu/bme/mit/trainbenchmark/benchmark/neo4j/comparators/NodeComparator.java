@@ -11,17 +11,24 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.neo4j.comparators;
 
+import hu.bme.mit.trainbenchmark.benchmark.neo4j.driver.Neo4jDriver;
 import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
 import java.util.Comparator;
 
-public class NodeComparator implements Comparator<Node> {
+public class NodeComparator implements Comparator<String> {
 
 	@Override
-	public int compare(final Node node1, final Node node2) {
-		final long id1 = getLongId(node1);
-		final long id2 = getLongId(node2);
+	public int compare(final String nodeId1, final String nodeId2) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
+
+		final Node txNode1 = tx.getNodeByElementId(nodeId1);
+		final Node txNode2 = tx.getNodeByElementId(nodeId2);
+		final long id1 = getLongId(txNode1);
+		final long id2 = getLongId(txNode2);
+
 		return Long.compare(id1, id2);
 	}
 

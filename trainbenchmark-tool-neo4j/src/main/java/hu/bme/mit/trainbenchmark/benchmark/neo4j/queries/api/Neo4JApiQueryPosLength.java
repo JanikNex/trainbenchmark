@@ -19,6 +19,7 @@ import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jHelper;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 
 import java.util.ArrayList;
@@ -43,19 +44,21 @@ public class Neo4JApiQueryPosLength extends Neo4jApiQuery<Neo4jPosLengthMatch> {
 		final GraphDatabaseService graphDb = driver.getGraphDb();
 		try (Transaction tx = graphDb.beginTx()) {
 			// (segment:Segment)
-			final Iterable<Node> segments = () -> graphDb.findNodes(Neo4jConstants.labelSegment);
-			for (final Node segment : segments) {
-				final Number lengthNumber = (Number) segment.getProperty(LENGTH);
-				final int length = Neo4jHelper.numberToInt(lengthNumber);
+			final ResourceIterator<Node> segments = tx.findNodes(Neo4jConstants.labelSegment);
+            for (ResourceIterator<Node> it = segments; it.hasNext(); ) {
+                Node segment = it.next();
+                final Number lengthNumber = (Number) segment.getProperty(LENGTH);
+                final int length = Neo4jHelper.numberToInt(lengthNumber);
 
-				// segment.length <= 0
-				if (length <= 0) {
-					final Map<String, Object> match = new HashMap<>();
-					match.put(VAR_SEGMENT, segment);
-					match.put(VAR_LENGTH, length);
-					matches.add(new Neo4jPosLengthMatch(match));
-				}
-			}
+                // segment.length <= 0
+                if (length <= 0) {
+                    final Map<String, Object> match = new HashMap<>();
+                    match.put(VAR_SEGMENT, segment.getElementId());
+                    match.put(VAR_LENGTH, length);
+                    matches.add(new Neo4jPosLengthMatch(match));
+                }
+            }
+			segments.close();
 		}
 
 		return matches;

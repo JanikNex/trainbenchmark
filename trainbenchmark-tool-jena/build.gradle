@@ -1,12 +1,12 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-	classifier = 'fat'
+	archiveClassifier = 'fat'
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.jena.JenaBenchmarkMain' }
 }
 
 dependencies {
-	compile project(':trainbenchmark-tool')
-	compile project(':trainbenchmark-tool-rdf')
-	compile group: 'org.apache.jena', name: 'jena-querybuilder', version: jenaVersion
+	api project(':trainbenchmark-tool')
+	api project(':trainbenchmark-tool-rdf')
+	api group: 'org.apache.jena', name: 'jena-querybuilder', version: jenaVersion
 }

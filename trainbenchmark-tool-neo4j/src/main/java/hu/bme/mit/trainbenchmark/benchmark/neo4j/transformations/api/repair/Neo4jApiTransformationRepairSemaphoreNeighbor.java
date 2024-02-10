@@ -17,6 +17,7 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransfo
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
 import java.util.Collection;
 
@@ -28,9 +29,10 @@ public class Neo4jApiTransformationRepairSemaphoreNeighbor extends Neo4jApiTrans
 
 	@Override
 	public void activate(final Collection<Neo4jSemaphoreNeighborMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jSemaphoreNeighborMatch match : matches) {
-			final Node semaphore = match.getSemaphore();
-			final Node route2 = match.getRoute2();
+			final Node semaphore = tx.getNodeByElementId(match.getSemaphore());
+			final Node route2 = tx.getNodeByElementId(match.getRoute2());
 			if (!route2.hasRelationship(Direction.OUTGOING, Neo4jConstants.relationshipTypeEntry)) {
 				route2.createRelationshipTo(semaphore, Neo4jConstants.relationshipTypeEntry);
 			}

@@ -17,6 +17,7 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jApiTransfo
 import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
 import java.util.Collection;
 
@@ -28,9 +29,10 @@ public class Neo4jApiTransformationRepairSwitchMonitored extends Neo4jApiTransfo
 
 	@Override
 	public void activate(final Collection<Neo4jSwitchMonitoredMatch> matches) {
+		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jSwitchMonitoredMatch match : matches) {
-			final Node sw = match.getSw();
-			final Node sensor = driver.getGraphDb().createNode(Neo4jConstants.labelSensor);
+			final Node sw = tx.getNodeByElementId(match.getSw());
+			final Node sensor = tx.createNode(Neo4jConstants.labelSensor);
 			sensor.setProperty(ModelConstants.ID, driver.generateNewVertexId());
 			sw.createRelationshipTo(sensor, Neo4jConstants.relationshipTypeMonitoredBy);
 		}
