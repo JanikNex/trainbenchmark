@@ -1,0 +1,14 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+
+
+shadowJar {
+    archiveClassifier = 'fat'
+    manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.gcl.GclBenchmarkMain' }
+    mergeServiceFiles()
+}
+
+
+
+dependencies {
+    implementation project(':trainbenchmark-tool-gcl-modelserver')
+}

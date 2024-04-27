@@ -4,6 +4,7 @@ import hu.bme.mit.trainbenchmark.benchmark.config.ModelSetConfig
 import hu.bme.mit.trainbenchmark.benchmark.config.TransformationChangeSetStrategy
 import hu.bme.mit.trainbenchmark.benchmark.emfapi.config.EmfApiBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.eclipseocl.config.EclipseOclBenchmarkConfigBuilder
+import hu.bme.mit.trainbenchmark.benchmark.gcl.config.GclBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.jena.config.JenaBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.mysql.config.MySqlBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.config.Neo4jBenchmarkConfigBuilder
@@ -56,6 +57,7 @@ println()
 def tools = [
         new EmfApiBenchmarkConfigBuilder(),
 		new EclipseOclBenchmarkConfigBuilder(),
+		new GclBenchmarkConfigBuilder(),
         new JenaBenchmarkConfigBuilder().setInferencing(false).setFormat(RdfFormat.TURTLE),
         new JenaBenchmarkConfigBuilder().setInferencing(false).setFormat(RdfFormat.NTRIPLES),
         new JenaBenchmarkConfigBuilder().setInferencing(true).setFormat(RdfFormat.TURTLE),

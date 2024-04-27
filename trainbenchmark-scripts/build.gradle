@@ -17,6 +17,7 @@ dependencies {
 	implementation project(':trainbenchmark-tool-sqlite')
 	implementation project(':trainbenchmark-tool-tinkergraph')
 	implementation project(':trainbenchmark-tool-viatra')
+	implementation project(':trainbenchmark-tool-gcl')
 }
 
 sourceSets {
@@ -86,6 +87,7 @@ benchmark.dependsOn(':trainbenchmark-tool-neo4j:shadowJar')
 benchmark.dependsOn(':trainbenchmark-tool-sqlite:shadowJar')
 benchmark.dependsOn(':trainbenchmark-tool-tinkergraph:shadowJar')
 benchmark.dependsOn(':trainbenchmark-tool-viatra:shadowJar')
+benchmark.dependsOn(':trainbenchmark-tool-gcl:shadowJar')
 
 individualBenchmark.dependsOn(':trainbenchmark-tool-emfapi:shadowJar')
 individualBenchmark.dependsOn(':trainbenchmark-tool-eclipseocl:shadowJar')
@@ -95,3 +97,4 @@ individualBenchmark.dependsOn(':trainbenchmark-tool-neo4j:shadowJar')
 individualBenchmark.dependsOn(':trainbenchmark-tool-sqlite:shadowJar')
 individualBenchmark.dependsOn(':trainbenchmark-tool-tinkergraph:shadowJar')
 individualBenchmark.dependsOn(':trainbenchmark-tool-viatra:shadowJar')
+individualBenchmark.dependsOn(':trainbenchmark-tool-gcl:shadowJar')

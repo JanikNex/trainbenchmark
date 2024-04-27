@@ -32,5 +32,6 @@ include ':trainbenchmark-tool-sqlite'
 include ':trainbenchmark-tool-tinkergraph'
 include ':trainbenchmark-tool-viatra'
 include ':trainbenchmark-tool-viatra-patterns'
+include 'trainbenchmark-tool-gcl'
 include 'trainbenchmark-tool-gcl-modelserver'
 
