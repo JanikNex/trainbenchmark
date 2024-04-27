@@ -1,0 +1,5 @@
+*.jar
+hipe-network.xmi
+railway.ecore
+hipe-patterns.xmi
+*.class
