@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update
-RUN apt-get install -y dos2unix nano less file sudo wget
+RUN apt-get install -y dos2unix nano less file sudo wget htop curl
 RUN apt-get install -y mysql-server
 RUN apt-get install -y openjdk-17-jdk openjdk-17-jre-headless openjdk-17-source
 
