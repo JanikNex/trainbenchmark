@@ -24,6 +24,7 @@ public class GclTransformationInjectConnectedSegments<TDriver extends GclDriver,
 			ModelServerEditStatements.Node segment2 = GclTransformationUtils.getNode("seg2");
 			ModelServerEditStatements.Node segment3 = GclTransformationUtils.getNode(match.getSegment3());
 			ModelServerEditStatements.Node sensor = GclTransformationUtils.getNode(match.getSensor());
+			ModelServerEditStatements.Node region = GclTransformationUtils.getNode(match.getRegion());
 			ModelServerEditStatements.EditRequest editRequest1 = GclTransformationUtils.getCreateNodeRequest("seg2", "railway.Segment", List.of(
 				ModelServerEditStatements.EditCreateNodeAttributeAssignment.newBuilder()
 					.setAttributeName(QueryConstants.VAR_LENGTH)
@@ -34,7 +35,8 @@ public class GclTransformationInjectConnectedSegments<TDriver extends GclDriver,
 			ModelServerEditStatements.EditRequest editRequest3 = GclTransformationUtils.getCreateEdgeRequest(segment1, segment2, "connectsTo");
 			ModelServerEditStatements.EditRequest editRequest4 = GclTransformationUtils.getCreateEdgeRequest(segment2, segment3, "connectsTo");
 			ModelServerEditStatements.EditRequest editRequest5 = GclTransformationUtils.getCreateEdgeRequest(segment2, sensor, "monitoredBy");
-			ModelServerEditStatements.EditChainRequest request = GclTransformationUtils.getEditChainRequest(List.of(editRequest1, editRequest2, editRequest3, editRequest4, editRequest5));
+			ModelServerEditStatements.EditRequest editRequest6 = GclTransformationUtils.getCreateEdgeRequest(region, segment2, "elements");
+			ModelServerEditStatements.EditChainRequest request = GclTransformationUtils.getEditChainRequest(List.of(editRequest1, editRequest2, editRequest3, editRequest4, editRequest5, editRequest6));
 
 			this.driver.getEditServiceClient().executeEditRequest(request);
 		}
