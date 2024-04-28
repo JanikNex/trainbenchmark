@@ -25,6 +25,7 @@ public class EditServiceClient {
 				case DELETEEDGERESPONSE -> editResponse.getDeleteEdgeResponse().getState();
 				case DELETENODERESPONSE -> editResponse.getDeleteNodeResponse().getState();
 				case SETATTRIBUTERESPONSE -> editResponse.getSetAttributeResponse().getState();
+				case DELETEALLEDGESRESPONSE -> editResponse.getDeleteAllEdgesResponse().getState();
 				case RESPONSE_NOT_SET -> ModelServerEditStatements.EditState.FAILURE;
 			};
 

@@ -33,6 +33,17 @@ public class GclTransformationUtils {
 			.build();
 	}
 
+	public static ModelServerEditStatements.EditRequest getDeleteAllEdgesRequest(ModelServerEditStatements.Node startNode, String edgeName) {
+		return ModelServerEditStatements.EditRequest.newBuilder()
+			.setDeleteAllEdgesRequest(
+				ModelServerEditStatements.EditDeleteAllEdgesRequest.newBuilder()
+					.setStartNode(startNode)
+					.setReferenceName(edgeName)
+					.build()
+			)
+			.build();
+	}
+
 	public static ModelServerEditStatements.EditRequest getCreateNodeRequest(String tempId, String nodeType, Iterable<? extends ModelServerEditStatements.EditCreateNodeAttributeAssignment> attributes) {
 		return ModelServerEditStatements.EditRequest.newBuilder()
 			.setCreateNodeRequest(
