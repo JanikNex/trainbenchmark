@@ -19,8 +19,7 @@ public class GclTransformationInjectSwitchMonitored<TDriver extends GclDriver, T
 	public void activate(Collection<TSwitchMonitoredInjectMatch> matches) throws Exception {
 		for (GclSwitchMonitoredInjectMatch match : matches) {
 			ModelServerEditStatements.Node sw = GclTransformationUtils.getNode(match.getSw());
-			ModelServerEditStatements.Node sensor = GclTransformationUtils.getNode(match.getSensor());
-			ModelServerEditStatements.EditRequest editRequest = GclTransformationUtils.getDeleteEdgeRequest(sw, sensor, "monitoredBy");
+			ModelServerEditStatements.EditRequest editRequest = GclTransformationUtils.getDeleteAllEdgesRequest(sw,"monitoredBy");
 			ModelServerEditStatements.EditChainRequest request = GclTransformationUtils.getEditChainRequest(List.of(editRequest));
 
 			this.driver.getEditServiceClient().executeEditRequest(request);
