@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModelServerRunner {
@@ -28,7 +31,13 @@ public class ModelServerRunner {
 			throw new RuntimeException(e);
 		}
 
-		List<String> command = List.of("java", "-cp", mmlCliPath + File.pathSeparator + modelServerPath, "de.nexus.modelserver.ModelServer", workspacePath.toString(), newModelPath.toString(), hipeNetworkPath.toString());
+		RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+		List<String> memoryArguments = runtimeMxBean.getInputArguments().stream().filter(x -> x.startsWith("-Xms") || x.startsWith("-Xmx")).toList();
+
+		List<String> commandTemplate = List.of("-cp", mmlCliPath + File.pathSeparator + modelServerPath, "de.nexus.modelserver.ModelServer", workspacePath.toString(), newModelPath.toString(), hipeNetworkPath.toString());
+		ArrayList<String> command = new ArrayList<>(List.of("java"));
+		command.addAll(memoryArguments);
+		command.addAll(commandTemplate);
 
 		try {
 			ProcessBuilder pb = new ProcessBuilder(command).redirectInput(ProcessBuilder.Redirect.INHERIT).redirectInput(ProcessBuilder.Redirect.INHERIT);
