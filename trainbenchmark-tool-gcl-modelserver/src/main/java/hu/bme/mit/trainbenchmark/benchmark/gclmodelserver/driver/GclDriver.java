@@ -9,6 +9,8 @@ public class GclDriver extends Driver {
 	private final static String MODEL_SERVER_GRPC_HOST = "localhost";
 	private final static int MODEL_SERVER_GRPC_PORT = 9090;
 
+	private ManagedChannel channel;
+
 	private ConstraintServiceClient constraintServiceClient;
 	private EditServiceClient editServiceClient;
 	private ManagementServiceClient managementServiceClient;
@@ -26,6 +28,7 @@ public class GclDriver extends Driver {
 		}
 		ModelServerRunner.cleanup();
 		Thread.sleep(5000);
+		this.channel.shutdownNow();
 	}
 
 	@Override
@@ -34,7 +37,7 @@ public class GclDriver extends Driver {
 		ModelServerRunner.start(modelPath);
 		Thread.sleep(10000);
 
-		ManagedChannel channel = ManagedChannelBuilder.forAddress(MODEL_SERVER_GRPC_HOST, MODEL_SERVER_GRPC_PORT)
+		this.channel = ManagedChannelBuilder.forAddress(MODEL_SERVER_GRPC_HOST, MODEL_SERVER_GRPC_PORT)
 			.usePlaintext()
 			.build();
 
