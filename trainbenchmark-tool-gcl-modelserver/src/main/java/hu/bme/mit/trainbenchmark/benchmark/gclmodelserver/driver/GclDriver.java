@@ -35,7 +35,6 @@ public class GclDriver extends Driver {
 	public void read(String modelPath) throws Exception {
 		System.out.println("[GCL] Read " + modelPath);
 		ModelServerRunner.start(modelPath);
-		Thread.sleep(10000);
 
 		this.channel = ManagedChannelBuilder.forAddress(MODEL_SERVER_GRPC_HOST, MODEL_SERVER_GRPC_PORT)
 			.usePlaintext()

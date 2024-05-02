@@ -1,7 +1,9 @@
 package hu.bme.mit.trainbenchmark.benchmark.gclmodelserver.driver;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
@@ -29,8 +31,22 @@ public class ModelServerRunner {
 		List<String> command = List.of("java", "-cp", mmlCliPath + File.pathSeparator + modelServerPath, "de.nexus.modelserver.ModelServer", workspacePath.toString(), newModelPath.toString(), hipeNetworkPath.toString());
 
 		try {
-			ProcessBuilder pb = new ProcessBuilder(command).inheritIO();
-			pb.start();
+			ProcessBuilder pb = new ProcessBuilder(command).redirectInput(ProcessBuilder.Redirect.INHERIT).redirectInput(ProcessBuilder.Redirect.INHERIT);
+			Process process = pb.start();
+			InputStreamReader processOutput = new InputStreamReader(process.getInputStream());
+			BufferedReader processOutputReader = new BufferedReader(processOutput);
+			String line;
+			System.out.println("[ModelServerRunner] Waiting for completed ModelServer startup...");
+			while (process.isAlive() && (line = processOutputReader.readLine()) != null) {
+				System.out.println(line);
+				if (line.startsWith("[gRPC Server] Server started")) {
+					break;
+				}
+			}
+			processOutputReader.close();
+			processOutput.close();
+			System.out.println("[ModelServerRunner] Recognized successful ModelServer start!");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("[ModelServerRunner] Failed to start ModelServer");
