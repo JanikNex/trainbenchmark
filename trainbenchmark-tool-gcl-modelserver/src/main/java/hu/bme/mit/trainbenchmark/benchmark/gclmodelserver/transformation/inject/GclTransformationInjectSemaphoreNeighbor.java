@@ -2,28 +2,23 @@ package hu.bme.mit.trainbenchmark.benchmark.gclmodelserver.transformation.inject
 
 import de.nexus.modelserver.proto.ModelServerEditStatements;
 import hu.bme.mit.trainbenchmark.benchmark.gclmodelserver.driver.GclDriver;
+import hu.bme.mit.trainbenchmark.benchmark.gclmodelserver.matches.GclMatch;
 import hu.bme.mit.trainbenchmark.benchmark.gclmodelserver.matches.GclSemaphoreNeighborInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.gclmodelserver.transformation.GclTransformation;
 import hu.bme.mit.trainbenchmark.benchmark.gclmodelserver.transformation.GclTransformationUtils;
 
-import java.util.Collection;
 import java.util.List;
 
 public class GclTransformationInjectSemaphoreNeighbor<TDriver extends GclDriver, TSemaphoreNeighborInjectMatch extends GclSemaphoreNeighborInjectMatch> extends GclTransformation<TSemaphoreNeighborInjectMatch, TDriver> {
 
-	public GclTransformationInjectSemaphoreNeighbor(TDriver driver) {
-		super(driver);
+	public GclTransformationInjectSemaphoreNeighbor(TDriver driver, boolean collectiveTransformation) {
+		super(driver, collectiveTransformation);
 	}
 
 	@Override
-	public void activate(Collection<TSemaphoreNeighborInjectMatch> matches) throws Exception {
-		for (GclSemaphoreNeighborInjectMatch match : matches) {
-			ModelServerEditStatements.Node route = GclTransformationUtils.getNode(match.getRoute());
-			ModelServerEditStatements.Node semaphore = GclTransformationUtils.getNode(match.getSemaphore());
-			ModelServerEditStatements.EditRequest editRequest = GclTransformationUtils.getDeleteEdgeRequest(route, semaphore, "entry");
-			ModelServerEditStatements.EditChainRequest request = GclTransformationUtils.getEditChainRequest(List.of(editRequest));
-
-			this.driver.getEditServiceClient().executeEditRequest(request);
-		}
+	protected List<ModelServerEditStatements.EditRequest> getTransformation(GclMatch match) {
+		ModelServerEditStatements.Node route = GclTransformationUtils.getNode(((GclSemaphoreNeighborInjectMatch) match).getRoute());
+		ModelServerEditStatements.Node semaphore = GclTransformationUtils.getNode(((GclSemaphoreNeighborInjectMatch) match).getSemaphore());
+		return List.of(GclTransformationUtils.getDeleteEdgeRequest(route, semaphore, "entry"));
 	}
 }

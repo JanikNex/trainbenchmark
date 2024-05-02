@@ -11,6 +11,12 @@ import hu.bme.mit.trainbenchmark.benchmark.operations.ModelOperationFactory;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
 
 public class GclModelOperationFactory<TDriver extends GclDriver> extends ModelOperationFactory<GclMatch, TDriver> {
+	private final boolean collectiveTransformation;
+
+	public GclModelOperationFactory(boolean collectiveTransformation) {
+		super();
+		this.collectiveTransformation = collectiveTransformation;
+	}
 
 	@Override
 	public ModelOperation<? extends GclMatch, TDriver> createOperation(final RailwayOperation operationEnum, final String workspaceDir,
@@ -26,14 +32,14 @@ public class GclModelOperationFactory<TDriver extends GclDriver> extends ModelOp
 
 			case CONNECTEDSEGMENTS_INJECT: {
 				final GclQuery<GclConnectedSegmentsInjectMatch, TDriver> query = new GclQueryConnectedSegmentsInject<>(driver);
-				final GclTransformation<GclConnectedSegmentsInjectMatch, TDriver> transformation = new GclTransformationInjectConnectedSegments<>(driver);
+				final GclTransformation<GclConnectedSegmentsInjectMatch, TDriver> transformation = new GclTransformationInjectConnectedSegments<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclConnectedSegmentsInjectMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 
 			}
 			case CONNECTEDSEGMENTS_REPAIR: {
 				final GclQuery<GclConnectedSegmentsMatch, TDriver> query = new GclQueryConnectedSegments<>(driver);
-				final GclTransformation<GclConnectedSegmentsMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver);
+				final GclTransformation<GclConnectedSegmentsMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclConnectedSegmentsMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 			}
@@ -47,14 +53,14 @@ public class GclModelOperationFactory<TDriver extends GclDriver> extends ModelOp
 
 			case POSLENGTH_INJECT: {
 				final GclQuery<GclPosLengthInjectMatch, TDriver> query = new GclQueryPosLengthInject<>(driver);
-				final GclTransformation<GclPosLengthInjectMatch, TDriver> transformation = new GclTransformationInjectPosLength<>(driver);
+				final GclTransformation<GclPosLengthInjectMatch, TDriver> transformation = new GclTransformationInjectPosLength<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclPosLengthInjectMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 
 			}
 			case POSLENGTH_REPAIR: {
 				final GclQuery<GclPosLengthMatch, TDriver> query = new GclQueryPosLength<>(driver);
-				final GclTransformation<GclPosLengthMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver);
+				final GclTransformation<GclPosLengthMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclPosLengthMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 			}
@@ -68,14 +74,14 @@ public class GclModelOperationFactory<TDriver extends GclDriver> extends ModelOp
 
 			case ROUTESENSOR_INJECT: {
 				final GclQuery<GclRouteSensorInjectMatch, TDriver> query = new GclQueryRouteSensorInject<>(driver);
-				final GclTransformation<GclRouteSensorInjectMatch, TDriver> transformation = new GclTransformationInjectRouteSensor<>(driver);
+				final GclTransformation<GclRouteSensorInjectMatch, TDriver> transformation = new GclTransformationInjectRouteSensor<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclRouteSensorInjectMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 
 			}
 			case ROUTESENSOR_REPAIR: {
 				final GclQuery<GclRouteSensorMatch, TDriver> query = new GclQueryRouteSensor<>(driver);
-				final GclTransformation<GclRouteSensorMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver);
+				final GclTransformation<GclRouteSensorMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclRouteSensorMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 			}
@@ -89,14 +95,14 @@ public class GclModelOperationFactory<TDriver extends GclDriver> extends ModelOp
 
 			case SEMAPHORENEIGHBOR_INJECT: {
 				final GclQuery<GclSemaphoreNeighborInjectMatch, TDriver> query = new GclQuerySemaphoreNeighborInject<>(driver);
-				final GclTransformation<GclSemaphoreNeighborInjectMatch, TDriver> transformation = new GclTransformationInjectSemaphoreNeighbor<>(driver);
+				final GclTransformation<GclSemaphoreNeighborInjectMatch, TDriver> transformation = new GclTransformationInjectSemaphoreNeighbor<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclSemaphoreNeighborInjectMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 
 			}
 			case SEMAPHORENEIGHBOR_REPAIR: {
 				final GclQuery<GclSemaphoreNeighborMatch, TDriver> query = new GclQuerySemaphoreNeighbor<>(driver);
-				final GclTransformation<GclSemaphoreNeighborMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver);
+				final GclTransformation<GclSemaphoreNeighborMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclSemaphoreNeighborMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 			}
@@ -110,14 +116,14 @@ public class GclModelOperationFactory<TDriver extends GclDriver> extends ModelOp
 
 			case SWITCHMONITORED_INJECT: {
 				final GclQuery<GclSwitchMonitoredInjectMatch, TDriver> query = new GclQuerySwitchMonitoredInject<>(driver);
-				final GclTransformation<GclSwitchMonitoredInjectMatch, TDriver> transformation = new GclTransformationInjectSwitchMonitored<>(driver);
+				final GclTransformation<GclSwitchMonitoredInjectMatch, TDriver> transformation = new GclTransformationInjectSwitchMonitored<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclSwitchMonitoredInjectMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 
 			}
 			case SWITCHMONITORED_REPAIR: {
 				final GclQuery<GclSwitchMonitoredMatch, TDriver> query = new GclQuerySwitchMonitored<>(driver);
-				final GclTransformation<GclSwitchMonitoredMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver);
+				final GclTransformation<GclSwitchMonitoredMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclSwitchMonitoredMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 			}
@@ -131,14 +137,14 @@ public class GclModelOperationFactory<TDriver extends GclDriver> extends ModelOp
 
 			case SWITCHSET_INJECT: {
 				final GclQuery<GclSwitchSetInjectMatch, TDriver> query = new GclQuerySwitchSetInject<>(driver);
-				final GclTransformation<GclSwitchSetInjectMatch, TDriver> transformation = new GclTransformationInjectSwitchSet<>(driver);
+				final GclTransformation<GclSwitchSetInjectMatch, TDriver> transformation = new GclTransformationInjectSwitchSet<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclSwitchSetInjectMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 
 			}
 			case SWITCHSET_REPAIR: {
 				final GclQuery<GclSwitchSetMatch, TDriver> query = new GclQuerySwitchSet<>(driver);
-				final GclTransformation<GclSwitchSetMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver);
+				final GclTransformation<GclSwitchSetMatch, TDriver> transformation = new GclTransformationProvidedRepair<>(driver, this.collectiveTransformation);
 				final ModelOperation<GclSwitchSetMatch, TDriver> operation = ModelOperation.of(query, transformation);
 				return operation;
 			}

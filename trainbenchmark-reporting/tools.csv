@@ -1,6 +1,8 @@
 tool,format,storage
 EMF API,EMF,in-memory
 Eclipse OCL,EMF,in-memory
+GCL (SingleFix),EMF,in-memory
+GCL (CollectiveFix),EMF,in-memory
 VIATRA (Incremental),EMF,in-memory
 VIATRA (Local Search),EMF,in-memory
 Neo4j (Core API-CSV),property graph,disk-resident

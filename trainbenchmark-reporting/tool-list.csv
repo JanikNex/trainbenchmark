@@ -1,6 +1,8 @@
 Tool
 EMF API
 Eclipse OCL
+GCL (SingleFix)
+GCL (CollectiveFix)
 Jena (Inferencing-ttl)
 Jena (No Inferencing-ttl)
 Jena (No Inferencing-nt)

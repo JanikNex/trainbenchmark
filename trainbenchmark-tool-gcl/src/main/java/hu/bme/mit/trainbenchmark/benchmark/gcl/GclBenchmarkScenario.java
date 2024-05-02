@@ -10,6 +10,6 @@ import hu.bme.mit.trainbenchmark.benchmark.phases.BenchmarkScenario;
 
 public class GclBenchmarkScenario extends BenchmarkScenario<GclMatch, GclDriver, GclBenchmarkConfig> {
 	public GclBenchmarkScenario(final GclBenchmarkConfig bc) throws Exception {
-		super(new GclDriverFactory(), new GclModelOperationFactory<>(), new GclMatchComparator(), bc);
+		super(new GclDriverFactory(), new GclModelOperationFactory<>(bc.isCollectiveTransformation()), new GclMatchComparator(), bc);
 	}
 }

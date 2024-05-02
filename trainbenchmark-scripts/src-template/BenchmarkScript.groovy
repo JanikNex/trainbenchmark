@@ -57,7 +57,8 @@ println()
 def tools = [
         new EmfApiBenchmarkConfigBuilder(),
 		new EclipseOclBenchmarkConfigBuilder(),
-		new GclBenchmarkConfigBuilder(),
+		new GclBenchmarkConfigBuilder().setCollectiveTransformation(false),
+		new GclBenchmarkConfigBuilder().setCollectiveTransformation(true),
         new JenaBenchmarkConfigBuilder().setInferencing(false).setFormat(RdfFormat.TURTLE),
         new JenaBenchmarkConfigBuilder().setInferencing(false).setFormat(RdfFormat.NTRIPLES),
         new JenaBenchmarkConfigBuilder().setInferencing(true).setFormat(RdfFormat.TURTLE),
