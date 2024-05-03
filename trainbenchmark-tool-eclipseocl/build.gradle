@@ -1,0 +1,14 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+    archiveClassifier = 'fat'
+    manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.eclipseocl.EclipseOclBenchmarkMain' }
+}
+
+dependencies {
+    implementation project(':trainbenchmark-tool-emf')
+    api group: 'org.eclipse.ocl', name: 'org.eclipse.ocl', version:'3.3.0.v20140120-1508'
+    api group: 'org.eclipse.ocl', name: 'org.eclipse.ocl.ecore', version:'3.3.0.v20130520-1222'
+    api group: 'org.eclipse.ocl', name: 'org.eclipse.ocl.common', version:'1.2.0.v20140610-0641'
+    api group: 'lpg.runtime', name: 'java', version:'2.0.17-v201004271640'
+}
