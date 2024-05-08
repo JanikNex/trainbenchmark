@@ -38,6 +38,7 @@ public class GclDriver extends Driver {
 
 		this.channel = ManagedChannelBuilder.forAddress(MODEL_SERVER_GRPC_HOST, MODEL_SERVER_GRPC_PORT)
 			.usePlaintext()
+			.maxInboundMessageSize(Integer.MAX_VALUE)
 			.build();
 
 		this.constraintServiceClient = new ConstraintServiceClient(channel);
