@@ -30,6 +30,13 @@ public class EditServiceClient {
 			};
 
 			if (state != ModelServerEditStatements.EditState.SUCCESS) {
+				if (editResponse.getResponseCase().equals(ModelServerEditStatements.EditResponse.ResponseCase.SETATTRIBUTERESPONSE)){
+					// The repair transformation for ConnectedSegments deletes to additional segment instead of
+					// separating it. This leads to cases where the segment length should be updated although
+					// it was deleted in a previous iteration.
+					System.out.println("[WARNING] Ignored failed SetAttributeRequest");
+					continue;
+				}
 				System.out.println(editResponse.toString());
 				throw new RuntimeException("Failed to execute EditChain!");
 			}
