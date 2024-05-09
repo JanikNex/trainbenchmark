@@ -40,7 +40,7 @@ public class ModelServerRunner {
 		command.addAll(commandTemplate);
 
 		try {
-			ProcessBuilder pb = new ProcessBuilder(command).redirectInput(ProcessBuilder.Redirect.INHERIT).redirectInput(ProcessBuilder.Redirect.INHERIT);
+			ProcessBuilder pb = new ProcessBuilder(command).redirectInput(ProcessBuilder.Redirect.INHERIT).redirectError(ProcessBuilder.Redirect.INHERIT);
 			Process process = pb.start();
 			InputStreamReader processOutput = new InputStreamReader(process.getInputStream());
 			BufferedReader processOutputReader = new BufferedReader(processOutput);
