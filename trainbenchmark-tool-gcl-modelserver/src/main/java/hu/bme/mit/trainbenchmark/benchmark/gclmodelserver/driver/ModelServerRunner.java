@@ -34,7 +34,7 @@ public class ModelServerRunner {
 		RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
 		List<String> memoryArguments = runtimeMxBean.getInputArguments().stream().filter(x -> x.startsWith("-Xms") || x.startsWith("-Xmx")).toList();
 
-		List<String> commandTemplate = List.of("-cp", mmlCliPath + File.pathSeparator + modelServerPath, "de.nexus.modelserver.ModelServer", workspacePath.toString(), newModelPath.toString(), hipeNetworkPath.toString());
+		List<String> commandTemplate = List.of("-XX:+UseParallelGC", "-server", "-cp", mmlCliPath + File.pathSeparator + modelServerPath, "de.nexus.modelserver.ModelServer", workspacePath.toString(), newModelPath.toString(), hipeNetworkPath.toString());
 		ArrayList<String> command = new ArrayList<>(List.of("java"));
 		command.addAll(memoryArguments);
 		command.addAll(commandTemplate);
