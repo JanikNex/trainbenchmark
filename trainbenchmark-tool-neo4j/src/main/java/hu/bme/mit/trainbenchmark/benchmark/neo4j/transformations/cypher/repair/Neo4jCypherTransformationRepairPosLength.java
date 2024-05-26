@@ -35,8 +35,8 @@ public class Neo4jCypherTransformationRepairPosLength extends Neo4jCypherTransfo
 	public void activate(final Collection<Neo4jPosLengthMatch> matches) throws IOException {
 		Transaction tx = Neo4jDriver.getTmpTransaction();
 		for (final Neo4jPosLengthMatch match : matches) {
-			Node segment = tx.getNodeByElementId(match.getSegment());
 			try {
+				Node segment = tx.getNodeByElementId(match.getSegment());
 				final Map<String, Object> parameters = ImmutableMap.of( //
 					QueryConstants.VAR_SEGMENT, segment //
 				);
