@@ -12,6 +12,7 @@ dependencies {
 	implementation project(':trainbenchmark-tool-emfapi')
 	implementation project(':trainbenchmark-tool-eclipseocl')
 	implementation project(':trainbenchmark-tool-jena')
+	implementation project(':trainbenchmark-tool-sesame')
 	implementation project(':trainbenchmark-tool-mysql')
 	implementation project(':trainbenchmark-tool-neo4j')
 	implementation project(':trainbenchmark-tool-sqlite')

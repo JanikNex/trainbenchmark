@@ -5,6 +5,7 @@ import hu.bme.mit.trainbenchmark.benchmark.config.TransformationChangeSetStrateg
 import hu.bme.mit.trainbenchmark.benchmark.emfapi.config.EmfApiBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.eclipseocl.config.EclipseOclBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.jena.config.JenaBenchmarkConfigBuilder
+import hu.bme.mit.trainbenchmark.benchmark.sesame.config.SesameBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.mysql.config.MySqlBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.config.Neo4jBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.config.Neo4jEngine
@@ -59,6 +60,9 @@ def tools = [
         new JenaBenchmarkConfigBuilder().setInferencing(false).setFormat(RdfFormat.TURTLE),
         new JenaBenchmarkConfigBuilder().setInferencing(false).setFormat(RdfFormat.NTRIPLES),
         new JenaBenchmarkConfigBuilder().setInferencing(true).setFormat(RdfFormat.TURTLE),
+		new SesameBenchmarkConfigBuilder().setInferencing(false).setFormat(RdfFormat.TURTLE),
+		new SesameBenchmarkConfigBuilder().setInferencing(false).setFormat(RdfFormat.NTRIPLES),
+		new SesameBenchmarkConfigBuilder().setInferencing(true).setFormat(RdfFormat.TURTLE),
         new MySqlBenchmarkConfigBuilder(),
         new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CORE_API).setGraphFormat(Neo4jGraphFormat.CSV).setDeployment(Neo4jDeployment.EMBEDDED),
         new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CORE_API ).setGraphFormat(Neo4jGraphFormat.GRAPHML).setDeployment(Neo4jDeployment.EMBEDDED),
