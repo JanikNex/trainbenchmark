@@ -88,6 +88,8 @@ for (workload in workloads) {
     next
   }
 
+  write.csv(df, paste("../diagrams/times-data-", workload, ".csv", sep=""),quote=FALSE,sep=",")
+
   # x axis labels
   xbreaks = unique(df$Model)
   currentWorkloadSizes = head(workloadSizes, n=length(xbreaks))
